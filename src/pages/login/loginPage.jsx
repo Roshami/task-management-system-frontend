@@ -27,7 +27,7 @@ const LoginPage = () => {
       toast.success('Login successful');
       localStorage.setItem('token', response.data.token);
 
-      navigate(response.data.user.isAdmin == true ? '/admin' : '/dashboard');
+      navigate(response.data.user.isAdmin == true ? '/admin' : '/home');
     } catch (err) {
       toast.error(err.response?.data?.error || 'Login failed');
       console.error(err);
