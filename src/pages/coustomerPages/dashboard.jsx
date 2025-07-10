@@ -1,7 +1,9 @@
+import Calender from "../../components/customerDashboard/calender"
+
 const Dashboard = () => {
     return (
         <div>
-            <h1>Dashboard jj</h1>
+            <Calender />
         </div>
     )
 }
