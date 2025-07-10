@@ -3,6 +3,7 @@ import SearchBar from '../../components/searchbar';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { MdLogout } from 'react-icons/md';
 import Dashboard from './dashboard';
+import MyTasksPage from './myTasksPage';
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -72,7 +73,7 @@ const Home = () => {
       <div className="flex items-center p-3 mt-3 bg-white rounded-2xl h-full">
         <Routes >
           <Route path="/" element={<Dashboard />} />
-          <Route path="/mytasks" element={<div>My Tasks</div>} />
+          <Route path="/mytasks" element={<MyTasksPage />} />
           <Route path="/services" element={<div>Services</div>} />
           <Route path="/contact" element={<div>Contact</div>} />
         </Routes>
