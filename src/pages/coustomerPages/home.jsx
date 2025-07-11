@@ -6,10 +6,10 @@ import Dashboard from './dashboard';
 import MyTasksPage from './taskPage/myTasksPage';
 import AddTasksPage from './taskPage/addTasksPage';
 
-
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
   //const location = useLocation(); // Get current route location
+
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -32,8 +32,8 @@ const Home = () => {
           <nav className="flex items-center justify-center">
             <ul className="flex justify-center gap-6">
               <li>
-                <Link 
-                  to="/home" 
+                <Link
+                  to="/home"
                   className={`text-gray-600 hover:text-gray-800 font-bold text-sm sm:text-lg ${
                     isActive('/home') ? 'border-b-2 border-gray-800' : ''
                   }`}
@@ -42,33 +42,36 @@ const Home = () => {
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/home/mytasks" 
+                <Link
+                  to="/home/mytasks"
                   className={`text-gray-600 hover:text-gray-800 font-bold text-sm sm:text-lg ${
-                    isActive('/home/mytasks') ? 'border-b-2 border-gray-800' : ''
+                    isActive('/home/mytasks')
+                      ? 'border-b-2 border-gray-800'
+                      : ''
                   }`}
                 >
                   My Tasks
                 </Link>
-                  
               </li>
-              
-              
             </ul>
           </nav>
-          <Link to="/" className=" font-bold py-2 px-4 rounded flex items-center gap-2">
-          <MdLogout className="h-4 w-4 sm:h-6 sm:w-6 text-gray-600 hover:text-gray-800" />
-            <span className="text-gray-600 hover:text-gray-800 hidden sm:block">Logout</span>
+          <Link
+            to="/"
+            className=" font-bold py-2 px-4 rounded flex items-center gap-2"
+          >
+            <MdLogout className="h-4 w-4 sm:h-6 sm:w-6 text-gray-600 hover:text-gray-800" />
+            <span className="text-gray-600 hover:text-gray-800 hidden sm:block">
+              Logout
+            </span>
           </Link>
         </div>
       </div>
 
       <div className="flex items-center p-3 mt-3 bg-white rounded-2xl h-full">
-        <Routes >
+        <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/mytasks" element={<MyTasksPage />} />
-          <Route path='/mytasks/addTask' element={<AddTasksPage />} />
-          
+          <Route path="/mytasks/addTask" element={<AddTasksPage />} />
         </Routes>
       </div>
     </div>

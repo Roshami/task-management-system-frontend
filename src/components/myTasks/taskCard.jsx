@@ -21,7 +21,7 @@ const TaskCard = ({
       text: 'text-amber-800',
       dot: 'bg-amber-500',
     },
-    'Not Started': {
+    Pending: {
       bg: 'bg-gray-100',
       text: 'text-gray-800',
       dot: 'bg-gray-500',
