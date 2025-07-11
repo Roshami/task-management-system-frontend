@@ -3,7 +3,9 @@ import SearchBar from '../../components/searchbar';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { MdLogout } from 'react-icons/md';
 import Dashboard from './dashboard';
-import MyTasksPage from './myTasksPage';
+import MyTasksPage from './taskPage/myTasksPage';
+import AddTasksPage from './taskPage/addTasksPage';
+
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -74,6 +76,7 @@ const Home = () => {
         <Routes >
           <Route path="/" element={<Dashboard />} />
           <Route path="/mytasks" element={<MyTasksPage />} />
+          <Route path='/mytasks/addTask' element={<AddTasksPage />} />
           <Route path="/services" element={<div>Services</div>} />
           <Route path="/contact" element={<div>Contact</div>} />
         </Routes>
