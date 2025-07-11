@@ -122,144 +122,185 @@ const AddTasksPage = () => {
     });
   };
 
-  const handleBack = () => {
-    navigation('/home/myTasks');
-  };
+  
 
   return (
-    <div className="p-4 w-full rounded-lg">
+    <div className="w-lg md:w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+
       <div>
-        <button type="button" className="flex items-center cursor-pointer" onClick={handleBack}><IoMdArrowRoundBack className="mr-2 h-4 w-4" /></button>
+        <button 
+          type="button" 
+          className="flex items-center text-violet-600 hover:text-violet-800 transition-colors mb-5 cursor-pointer"
+          onClick={() => navigation('/home/myTasks')}
+        >
+          <IoMdArrowRoundBack className="mr-2 h-5 w-5" />
+          <span className="hidden sm:inline">Back</span>
+        </button>
       </div>
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold mb-4">Add New Task</h1>
-      <button type="button" className="flex items-center cursor-pointer" onClick={handleRefresh}><FiRefreshCw className="mr-2 h-4 w-4" /></button>
+
+  {/* Header with refresh button */}
+  <div className="flex justify-between items-center mb-6">
+    <h1 className="text-3xl font-bold text-gray-800">Add New Task</h1>
+    <button 
+      type="button" 
+      className="flex items-center text-violet-600 hover:text-violet-800 transition-colors cursor-pointer"
+      onClick={handleRefresh}
+    >
+      <FiRefreshCw className="mr-2 h-5 w-5" />
+      <span className="hidden sm:inline">Refresh</span>
+    </button>
+  </div>
+  
+  <form onSubmit={handleSubmit}>
+    {/* Main Task Fields */}
+    <div className="mb-6 pb-6 border-b border-gray-200">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <TaskFormInputField
+          type="text"
+          label="Task Title"
+          id="title"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          required
+          className="col-span-2"
+        />
+
+        <TaskFormTextarea
+          label="Task Description"
+          id="description"
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          className="col-span-2"
+        />
+
+        <TaskFormDropdown
+          label="Task Priority"
+          id="priority"
+          name="priority"
+          value={formData.priority}
+          onChange={handleChange}
+          options={[
+            { value: 'High', label: 'High' },
+            { value: 'Medium', label: 'Medium' },
+            { value: 'Low', label: 'Low' },
+          ]}
+          required
+        />
+
+        <TaskFormInputField
+          type="date"
+          label="Task Start Date"
+          id="start_date"
+          name="start_date"
+          value={formData.start_date}
+          onChange={handleChange}
+        />
+
+        <TaskFormInputField
+          type="date"
+          label="Task End Date"
+          id="end_date"
+          name="end_date"
+          value={formData.end_date}
+          onChange={handleChange}
+        />
       </div>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4 border-b-2 pb-4 border-gray-300">
-          <TaskFormInputField
-            type="text"
-            label="Task Title"
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-          />
+    </div>
 
-          <TaskFormTextarea
-            label="Task Description"
-            id="description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-          />
+    {/* Subtasks Section */}
+    <div className="mb-6 pb-6 border-b border-gray-200">
+      <button
+        className="flex items-center text-violet-600 hover:text-violet-800 font-semibold transition-colors cursor-pointer"
+        type="button"
+        onClick={() => setShowSubtasks(!showSubtasks)}
+      >
+        {showSubtasks ? (
+          <FaMinus className="mr-2 h-3 w-3" />
+        ) : (
+          <FaPlus className="mr-2 h-3 w-3" />
+        )}
+        {showSubtasks ? 'Hide Subtasks' : 'Add Subtasks'}
+      </button>
 
-          <TaskFormDropdown
-            label="Task Priority"
-            id="priority"
-            name="priority"
-            value={formData.priority}
-            onChange={handleChange}
-            options={[
-              { value: 'High', label: 'High' },
-              { value: 'Medium', label: 'Medium' },
-              { value: 'Low', label: 'Low' },
-            ]}
-            required
-          />
-
-          <TaskFormInputField
-            type="date"
-            label="Task Start Date"
-            id="start_date"
-            name="start_date"
-            value={formData.start_date}
-            onChange={handleChange}
-          />
-
-          <TaskFormInputField
-            type="date"
-            label="Task End Date"
-            id="end_date"
-            name="end_date"
-            value={formData.end_date}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="mb-4 border-b-2 pb-4 border-gray-300">
+      {showSubtasks && (
+        <div className="mt-4 space-y-4">
           <button
-            className="cursor-pointer text-blue-600 font-semibold"
+            className="flex items-center text-green-600 hover:text-green-800 font-semibold transition-colors cursor-pointer"
             type="button"
-            onClick={() => setShowSubtasks(!showSubtasks)}
+            onClick={addSubtask}
           >
-            {showSubtasks ? 'Hide Subtasks' : 'Add Subtasks'}
+            <FaPlus className="mr-2 h-3 w-3" />
+            Add Subtask
           </button>
 
-          {showSubtasks && (
-            <div className="mt-4 flex flex-col">
-              <button
-                className="cursor-pointer flex justify-start items-center mb-4 text-green-600 font-semibold"
-                type="button"
-                onClick={addSubtask}
-              >
-                <FaPlus /> <span className="ml-2">Add Subtask</span>
-              </button>
+          {formData.subtasks.map((subtask, index) => (
+            <div 
+              className="p-4 bg-gray-50 rounded-lg border border-gray-200" 
+              key={index}
+            >
+              <div className="flex justify-between items-center mb-3">
+                <h4 className="font-bold text-gray-700">Subtask {index + 1}</h4>
+                <button
+                  className="text-red-600 hover:text-red-800 transition-colors cursor-pointer"
+                  type="button"
+                  onClick={() => removeSubtask(index)}
+                >
+                  <FaMinus />
+                </button>
+              </div>
 
-              {formData.subtasks.map((subtask, index) => (
-                <div className="mb-4 pb-4 border-b border-gray-200" key={index}>
-                  <div className="flex justify-between items-center mb-2">
-                    <h4 className="font-bold">Subtask {index + 1}</h4>
-                    <button
-                      className="text-red-600"
-                      type="button"
-                      onClick={() => removeSubtask(index)}
-                    >
-                      <FaMinus />
-                    </button>
-                  </div>
+              <div className="space-y-4">
+                <TaskFormInputField
+                  type="text"
+                  label="Subtask Title"
+                  id={`subtasks_title`}
+                  name="subtasks_title"
+                  value={subtask.subtasks_title}
+                  onChange={(e) => handleSubtaskChange(index, e)}
+                />
 
-                  <TaskFormInputField
-                    type="text"
-                    label="Subtask Title"
-                    id={`subtasks_title`}
-                    name="subtasks_title"
-                    value={subtask.subtasks_title}
-                    onChange={(e) => handleSubtaskChange(index, e)}
-                  />
-
-                  <TaskFormTextarea
-                    label="Subtask Description"
-                    id={`subtasks_description`}
-                    name="subtasks_description"
-                    value={subtask.subtasks_description}
-                    onChange={(e) => handleSubtaskChange(index, e)}
-                  />
-                </div>
-              ))}
+                <TaskFormTextarea
+                  label="Subtask Description"
+                  id={`subtasks_description`}
+                  name="subtasks_description"
+                  value={subtask.subtasks_description}
+                  onChange={(e) => handleSubtaskChange(index, e)}
+                />
+              </div>
             </div>
-          )}
+          ))}
         </div>
-
-       <div>
-         <button
-          type="submit"
-          className="bg-purple-500 hover:bg-purple-700 cursor-pointer text-white font-bold py-2 px-4 rounded"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? 'Adding...' : 'Add Task'}
-        </button>
-        <button
-          type="button"
-          className="bg-gray-500 hover:bg-gray-700 cursor-pointer text-white font-bold py-2 px-4 rounded ml-2"
-          onClick={handleCancel}
-        >
-          Cancel
-        </button>
-       </div>
-      </form>
+      )}
     </div>
+
+    {/* Form Actions */}
+    <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4">
+      
+      <button
+        type="submit"
+        className="px-6 py-2 bg-violet-600 hover:bg-violet-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 cursor-pointer"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? (
+          <span className="flex items-center justify-center">
+            <FiLoader className="animate-spin mr-2" />
+            Adding...
+          </span>
+        ) : 'Add Task'}
+      </button>
+
+      <button
+        type="button"
+        className="px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg transition-colors cursor-pointer"
+        onClick={handleCancel}
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
   );
 };
 

@@ -2,15 +2,20 @@ import PropTypes from 'prop-types';
 
 const TaskFormDropdown = ({ label, id, name, value, onChange, options }) => {
   return (
-    <div>
-      <label htmlFor={id}>{label}</label>
+    <div className="mb-1">
+      <label
+        htmlFor={id}
+        className="block mb-2 font-semibold text-lg text-gray-900 "
+      >
+        {label}
+      </label>
       <select
         id={id}
         name={name}
         value={value}
         onChange={onChange}
         required
-        className="w-full p-2 border cursor-pointer border-gray-300 rounded-md"
+        className="w-full p-2 bg-gray-50/50 border border-gray-300 rounded-md"
       >
         {options.map((option, index) => (
           <option key={index} value={option.value}>
