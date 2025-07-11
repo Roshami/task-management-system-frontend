@@ -29,7 +29,7 @@ export const createTask = createAsyncThunk(
 export const fetchTasks = createAsyncThunk('myTasks', async () => {
   try {
     const token = localStorage.getItem('token');
-    console.log(token);
+    
     const response = await axios.get(`${API_URL}/api/tasks/`, {
       headers: {
         Authorization: `Bearer ${token}`,

@@ -28,7 +28,7 @@ const MyTasksPage = () => {
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header section */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-4 mb-8">
         <div className="mb-4 sm:mb-0">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">My Tasks</h1>
           <p className="text-gray-500 mt-1">
