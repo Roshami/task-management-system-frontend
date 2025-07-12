@@ -43,13 +43,13 @@ export const fetchTasks = createAsyncThunk('myTasks', async () => {
 
 // update task
 export const updateTask = createAsyncThunk(
-  'myTasks/updateTask',
-  async ({ taskId, formData }, thunkAPI) => {
+  'myTasks',
+  async ({ id, updated}, thunkAPI) => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `${API_URL}/api/tasks/${taskId}`,
-        formData,
+        `${API_URL}/api/tasks/${id}`,
+        updated,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -101,6 +101,8 @@ export const tasksSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       });
+
+      
 /*
       // update task
       builder

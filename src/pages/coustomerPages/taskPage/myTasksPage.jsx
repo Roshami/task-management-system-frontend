@@ -69,7 +69,8 @@ const MyTasksPage = () => {
         ) : (
           tasks.map((task) => (
             <TaskCard 
-              key={task._id} 
+              key={task._id}
+              _id={task._id} 
               title={task.title} 
               description={task.description} 
               status={task.status} 

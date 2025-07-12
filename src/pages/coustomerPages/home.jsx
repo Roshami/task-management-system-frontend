@@ -5,6 +5,10 @@ import { MdLogout } from 'react-icons/md';
 import Dashboard from './dashboard';
 import MyTasksPage from './taskPage/myTasksPage';
 import AddTasksPage from './taskPage/addTasksPage';
+import EditTasksPage from './taskPage/viewTaskPage';
+import ViewTaskPage from './taskPage/viewTaskPage';
+
+
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -45,7 +49,7 @@ const Home = () => {
                 <Link
                   to="/home/mytasks"
                   className={`text-gray-600 hover:text-gray-800 font-bold text-sm sm:text-lg ${
-                    isActive('/home/mytasks')
+                    isActive('/home/mytasks/*')
                       ? 'border-b-2 border-gray-800'
                       : ''
                   }`}
@@ -69,9 +73,12 @@ const Home = () => {
 
       <div className="flex items-center p-3 mt-3 bg-white rounded-2xl h-full">
         <Routes>
+          {/* Logout link */}
           <Route path="/" element={<Dashboard />} />
           <Route path="/mytasks" element={<MyTasksPage />} />
           <Route path="/mytasks/addTask" element={<AddTasksPage />} />
+          <Route path="/mytasks/editTask/:id" element={<EditTasksPage />} />
+          <Route path="/mytasks/viewTask/:id" element={<ViewTaskPage />} />
         </Routes>
       </div>
     </div>
@@ -79,3 +86,8 @@ const Home = () => {
 };
 
 export default Home;
+      {/* Main content */}
+          {/* Dashboard route */}
+          {/* My Tasks route */}
+          {/* Add Task route */}
+          {/* Edit Task route */}
