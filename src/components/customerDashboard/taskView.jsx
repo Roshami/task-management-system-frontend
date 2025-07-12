@@ -89,15 +89,15 @@ const TaskView = () => {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col gap-6">
         {/* Status sidebar */}
-        <div className="w-full lg:w-1/4 bg-white rounded-xl shadow-sm border border-gray-200 p-4 h-fit">
+        <div className="w-full bg-white rounded-xl shadow-sm border border-gray-200 p-4 h-fit">
           <h2 className="text-lg font-bold text-gray-900 mb-4">Task Status</h2>
           <div className="space-y-3">
             {Object.entries(statusColors).map(([status, colors]) => (
               <div 
                 key={status}
-                className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                className="flex flex-col sm:flex-row items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
               >
                 <div className="flex items-center gap-3">
                   <div className={`w-3 h-3 rounded-full ${colors.dot}`}></div>
@@ -114,7 +114,7 @@ const TaskView = () => {
         </div>
 
         {/* Chart section */}
-        <div className="w-full lg:w-3/4 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="w-full bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <h2 className="text-lg font-bold text-gray-900 mb-6">Task Distribution</h2>
           <div className="h-80">
             <Pie data={chartData} options={chartOptions} />

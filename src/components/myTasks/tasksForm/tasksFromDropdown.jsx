@@ -1,6 +1,14 @@
 import PropTypes from 'prop-types';
 
-const TaskFormDropdown = ({ label, id, name, value, onChange, options }) => {
+const TaskFormDropdown = ({
+  label,
+  id,
+  name,
+  value,
+  onChange,
+  options,
+  disabled,
+}) => {
   return (
     <div className="mb-1">
       <label
@@ -15,6 +23,7 @@ const TaskFormDropdown = ({ label, id, name, value, onChange, options }) => {
         value={value}
         onChange={onChange}
         required
+        disabled={disabled}
         className="w-full p-2 bg-gray-50/50 border border-gray-300 rounded-md"
       >
         {options.map((option, index) => (
@@ -34,6 +43,7 @@ TaskFormDropdown.propTypes = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
+  disabled: PropTypes.bool,
 };
 
 export default TaskFormDropdown;

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const TaskFormTextarea = ({ label, id, name, value, onChange }) => {
+const TaskFormTextarea = ({ label, id, name, value, onChange, disabled }) => {
   return (
     <div className="mb-1">
       <label
@@ -16,6 +16,7 @@ const TaskFormTextarea = ({ label, id, name, value, onChange }) => {
         onChange={onChange}
         required
         placeholder={label}
+        disabled={disabled}
         className="w-full p-2 bg-gray-50/50 border border-gray-300 rounded-md"
       ></textarea>
     </div>
@@ -28,6 +29,7 @@ TaskFormTextarea.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
 };
 
 export default TaskFormTextarea;

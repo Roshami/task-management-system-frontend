@@ -1,6 +1,14 @@
 import PropTypes from 'prop-types';
 
-const TaskFormInputField = ({ type, label, id, name, value, onChange }) => {
+const TaskFormInputField = ({
+  type,
+  label,
+  id,
+  name,
+  value,
+  onChange,
+  disabled,
+}) => {
   return (
     <div className="mb-1">
       <label
@@ -16,6 +24,7 @@ const TaskFormInputField = ({ type, label, id, name, value, onChange }) => {
         value={value}
         required
         onChange={onChange}
+        disabled={disabled}
         placeholder={label}
         className="w-full p-2 bg-gray-50/50 border border-gray-300 rounded-md"
       />
@@ -30,6 +39,7 @@ TaskFormInputField.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
 };
 
 export default TaskFormInputField;

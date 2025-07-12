@@ -29,7 +29,7 @@ export const createTask = createAsyncThunk(
 export const fetchTasks = createAsyncThunk('myTasks', async () => {
   try {
     const token = localStorage.getItem('token');
-    
+
     const response = await axios.get(`${API_URL}/api/tasks/`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -44,18 +44,34 @@ export const fetchTasks = createAsyncThunk('myTasks', async () => {
 // update task
 export const updateTask = createAsyncThunk(
   'myTasks',
-  async ({ id, updated}, thunkAPI) => {
+  async ({ id, updated }, thunkAPI) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put(
-        `${API_URL}/api/tasks/${id}`,
-        updated,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.put(`${API_URL}/api/tasks/${id}`, updated, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// delete task
+export const deleteTask = createAsyncThunk(
+  'myTasks',
+  async (id, thunkAPI) => {
+    try {
+      const token = localStorage.getItem('token');
+      console.log(token);
+      console.log('id', id);
+      const response = await axios.delete(`${API_URL}/api/tasks/${id.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
@@ -69,8 +85,17 @@ export const tasksSlice = createSlice({
     tasks: [],
     loading: false,
     error: null,
+    searchTerm: '',
+    statusFilter: 'All',
   },
-  reducers: {},
+  reducers: {
+    setSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
+    },
+    setStatusFilter: (state, action) => {
+      state.statusFilter = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // add tasks
@@ -103,39 +128,26 @@ export const tasksSlice = createSlice({
       });
 
       
-/*
-      // update task
-      builder
-      .addCase(updateTask.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(updateTask.fulfilled, (state, action) => {
-        state.loading = false;
-        state.tasks = state.tasks.map((task) =>
-          task._id === action.payload._id ? action.payload : task
-        );
-      })
-      .addCase(updateTask.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      });
-
-      // delete task
-      builder
-      .addCase(deleteTask.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(deleteTask.fulfilled, (state, action) => {
-        state.loading = false;
-        state.tasks = state.tasks.filter((task) => task._id !== action.payload._id);
-      })
-      .addCase(deleteTask.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      });*/
   },
 });
+
+export const { setSearchTerm, setStatusFilter } = tasksSlice.actions;
+
+export const selectFilteredTasks = (state) => {
+  const search = state.tasks.searchTerm.toLowerCase();
+  const status = state.tasks.statusFilter;
+
+  return state.tasks.tasks.filter((task) => {
+    const matchesSearch =
+      task.title.toLowerCase().includes(search) ||
+      task.description.toLowerCase().includes(search);
+
+    const matchesStatus =
+      status === 'All' || task.status.toLowerCase() === status.toLowerCase();
+
+    return matchesSearch && matchesStatus;
+  });
+};
+
 
 export default tasksSlice.reducer;

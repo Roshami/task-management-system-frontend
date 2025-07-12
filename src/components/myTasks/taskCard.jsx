@@ -1,6 +1,11 @@
-import PropTypes from "prop-types";
-import { FaRegEdit, FaRegEye } from "react-icons/fa";
-import { useNavigate } from "react-router";
+import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { FaRegEdit, FaRegEye } from 'react-icons/fa';
+import { MdDateRange } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { deleteTask } from '../../features/tasks/taskSlice';
+import toast from 'react-hot-toast';
 
 const TaskCard = ({
   _id,
@@ -31,7 +36,8 @@ const TaskCard = ({
     },
     'On Hold': { bg: 'bg-red-100', text: 'text-red-800', dot: 'bg-red-500' },
   };
-
+  
+  const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const priorityColors = {
@@ -63,11 +69,31 @@ const TaskCard = ({
 
   const handleEdit = () => {
     navigate(`/home/myTasks/editTask/${_id}`);
-  }
+  };
 
   const handleView = () => {
     navigate(`/home/myTasks/viewTask/${_id}`);
+  };
+
+const handleDelete = () => {
+  
+  setModalOpen(true);
+};
+
+const dispatch = useDispatch();
+
+
+const handleTaskDelete = async () => {
+
+  try{
+    await dispatch(deleteTask({ id: _id })).unwrap();
+    toast.success('Task deleted successfully');
+    navigate('/home/mytasks');
+  } catch (error) {
+    console.error(error);
+    toast.error('Failed to delete task');
   }
+};
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300 w-full group hover:border-violet-200">
@@ -78,7 +104,8 @@ const TaskCard = ({
             {title}
           </h1>
           <p className="text-xs flex flex-col sm:flex-row gap-0 sm:gap-2 text-gray-500 mt-1">
-            <span>Created: </span><span>{formatDate(createdAt)}</span>
+            <span>Created: </span>
+            <span>{formatDate(createdAt)}</span>
           </p>
         </div>
 
@@ -120,38 +147,21 @@ const TaskCard = ({
       </p>
 
       {/* Date section */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-4 border-t border-gray-100">
-        <div className="flex items-center gap-2 text-sm">
+      <div className="flex flex-col  justify-between items-start gap-3 pt-4 border-t border-gray-100">
+        <div className="flex items-center gap-2 justify-between w-full text-sm">
           <div className="flex items-center gap-1 text-gray-600 bg-gray-50 px-2 py-1 rounded-md">
-            <svg
-              className="w-4 h-4 text-gray-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-              />
-            </svg>
+            <MdDateRange className="w-4 h-4 text-gray-500" />
             <span className="text-xs font-medium">Dates</span>
           </div>
-          <div className="text-xs text-gray-500 font-medium hidden sm:block">
+          <div className="w-full text-xs justify-end text-gray-500 font-medium flex">
             {daysRemaining()}
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 text-sm w-full sm:w-auto">
-          <div className="flex items-center justify-between sm:justify-start gap-2 w-full sm:w-auto">
-            <div className="flex items-center gap-1 text-gray-700 text-xs">
-              <span className="text-gray-500">Start:</span>
-              <span className="font-medium">{formatDate(startDate)}</span>
-            </div>
-            <div className="sm:hidden text-xs text-gray-500 font-medium">
-              {daysRemaining()}
-            </div>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between sm:gap-4 text-sm w-full p-1">
+          <div className="flex items-center gap-1 text-gray-700 text-xs mb-1 sm:m-0">
+            <span className="text-gray-500">Start:</span>
+            <span className="font-medium">{formatDate(startDate)}</span>
           </div>
           <div className="flex items-center gap-1 text-gray-700 text-xs mt-1 sm:mt-0">
             <span className="text-gray-500">End:</span>
@@ -162,15 +172,24 @@ const TaskCard = ({
 
       {/* Action buttons */}
       <div className="flex justify-center gap-1 sm:justify-end sm:gap-2 mt-4">
-        <button onClick={handleEdit} className="px-3 py-1.5 text-xs rounded-lg text-violet-600 hover:text-violet-800 hover:bg-violet-50 transition-colors font-medium flex items-center gap-1 cursor-pointer">
+        <button
+          onClick={handleEdit}
+          className="px-3 py-1.5 text-xs rounded-lg text-violet-600 hover:text-violet-800 hover:bg-violet-50 transition-colors font-medium flex items-center gap-1 cursor-pointer"
+        >
           <FaRegEdit className="w-4 h-4" />
           Edit
         </button>
-        <button onClick={handleView} className="px-3 py-1.5 text-xs rounded-lg text-gray-600 hover:text-gray-800 hover:bg-gray-50 transition-colors font-medium flex items-center gap-1 cursor-pointer">
+        <button
+          onClick={handleView}
+          className="px-3 py-1.5 text-xs rounded-lg text-gray-600 hover:text-gray-800 hover:bg-gray-50 transition-colors font-medium flex items-center gap-1 cursor-pointer"
+        >
           <FaRegEye className="w-4 h-4" />
           View
         </button>
-        <button className="px-3 py-1.5 text-xs rounded-lg text-red-600 hover:text-red-800 hover:bg-red-50 transition-colors font-medium flex items-center gap-1 cursor-pointer">
+        <button
+          onClick={handleDelete}
+          className="px-3 py-1.5 text-xs rounded-lg text-red-600 hover:text-red-800 hover:bg-red-50 transition-colors font-medium flex items-center gap-1 cursor-pointer"
+        >
           <svg
             className="w-4 h-4"
             fill="none"
@@ -187,11 +206,38 @@ const TaskCard = ({
           Delete
         </button>
       </div>
+
+{/* Delete Model */}
+{modalOpen && (
+  <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 bg-opacity-50">
+    <div className="bg-white p-4 rounded-lg shadow-md">
+      <h2 className="text-lg font-semibold mb-4">Delete Task</h2>
+      <p className="text-gray-700">Are you sure you want to delete this task?</p>
+      <div className="flex justify-end mt-4">
+        <button
+          onClick={handleTaskDelete}
+          className="px-4 py-2 bg-red-500 text-white rounded-md mr-2"
+        >
+          Delete
+        </button>
+        <button
+          onClick={() => setModalOpen(false)}
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+              
+
     </div>
   );
 };
 
 TaskCard.propTypes = {
+  _id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   startDate: PropTypes.string.isRequired,
