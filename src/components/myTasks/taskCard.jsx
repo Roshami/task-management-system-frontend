@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { deleteTask } from '../../features/tasks/taskSlice';
 import toast from 'react-hot-toast';
+import { jwtDecode } from 'jwt-decode';
 
 const TaskCard = ({
   _id,
@@ -95,6 +96,12 @@ const handleTaskDelete = async () => {
   }
 };
 
+const token = localStorage.getItem('token');
+
+  const getUser = jwtDecode(token);
+
+  const showAddButton = getUser?.user?.isPersonal === true;
+
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300 w-full group hover:border-violet-200">
       {/* Header section */}
@@ -174,7 +181,7 @@ const handleTaskDelete = async () => {
       <div className="flex justify-center gap-1 sm:justify-end sm:gap-2 mt-4">
         <button
           onClick={handleEdit}
-          className="px-3 py-1.5 text-xs rounded-lg text-violet-600 hover:text-violet-800 hover:bg-violet-50 transition-colors font-medium flex items-center gap-1 cursor-pointer"
+          className={`px-3 py-1.5 text-xs rounded-lg text-violet-600 hover:text-violet-800 hover:bg-violet-50 transition-colors font-medium ${showAddButton ? 'hidden' : 'flex'} items-center gap-1 cursor-pointer`}
         >
           <FaRegEdit className="w-4 h-4" />
           Edit
@@ -188,7 +195,7 @@ const handleTaskDelete = async () => {
         </button>
         <button
           onClick={handleDelete}
-          className="px-3 py-1.5 text-xs rounded-lg text-red-600 hover:text-red-800 hover:bg-red-50 transition-colors font-medium flex items-center gap-1 cursor-pointer"
+          className={`px-3 py-1.5 text-xs rounded-lg text-red-600 hover:text-red-800 hover:bg-red-50 transition-colors font-medium ${showAddButton ? 'hidden' : 'flex'} items-center gap-1 cursor-pointer`}
         >
           <svg
             className="w-4 h-4"
