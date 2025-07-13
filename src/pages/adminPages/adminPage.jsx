@@ -7,6 +7,7 @@ import { setSearchTerm } from '../../features/tasks/taskSlice';
 import AdminDashboard from './adminDashboard';
 import AdminUsersPage from './AdminUsers/adminUsersPage';
 import AdminTasksPage from './adminTasks/adminTasksPage';
+import AddAdminTasksPage from './adminTasks/addAdminTasksPage';
 
 const Admin = () => {
   const dispatch = useDispatch();
@@ -110,6 +111,7 @@ const Admin = () => {
           <Route path="/" element={<AdminDashboard />} />
           <Route path="/users" element={<AdminUsersPage />} />
           <Route path="/tasks" element={<AdminTasksPage />} />
+          <Route path='/tasks/addadmintasks' element={<AddAdminTasksPage />} />
         </Routes>
       </div>
     </div>
