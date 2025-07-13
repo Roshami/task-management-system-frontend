@@ -7,16 +7,18 @@ import {
   setStatusFilter,
 } from '../../../features/tasks/taskSlice';
 import LoadingSpinner from '../../../components/loadingSpinner';
-import TaskCard from '../../../components/myTasks/taskCard';
+
 import { BiTask } from 'react-icons/bi';
 import { FaPlus } from 'react-icons/fa';
 import { jwtDecode } from 'jwt-decode';
+import AdminTaskCard from '../../../components/adminTask/AdminTaskCard';
 
 const AdminTasksPage = () => {
   const dispatch = useDispatch();
   const statusFilter = useSelector((state) => state.tasks.statusFilter);
   const tasks = useSelector(selectFilteredTasks);
   const { loadding, error } = useSelector((state) => state.tasks);
+
 
   useEffect(() => {
     dispatch(fetchTasks());
@@ -124,9 +126,10 @@ const AdminTasksPage = () => {
           [...tasks]
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .map((task) => (
-              <TaskCard
+              <AdminTaskCard
                 key={task._id}
                 _id={task._id}
+                assignedTo={task.assigned_to}
                 title={task.title}
                 description={task.description}
                 status={task.status}

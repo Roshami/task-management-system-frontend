@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { use, useState } from 'react';
 import TaskFormInputField from '../../../components/myTasks/tasksForm/tasksFormInputFiled';
 import TaskFormTextarea from '../../../components/myTasks/tasksForm/tasksFormTextarea';
 import TaskFormDropdown from '../../../components/myTasks/tasksForm/tasksFromDropdown';
@@ -7,8 +7,9 @@ import { FaMinus, FaPlus } from 'react-icons/fa';
 import { FiRefreshCw, FiLoader } from 'react-icons/fi';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createTask } from '../../../features/tasks/taskSlice';
+import { jwtDecode } from 'jwt-decode';
 
 const AddAdminTasksPage = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,12 @@ const AddAdminTasksPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSubtasks, setShowSubtasks] = useState(false);
 
+const token = localStorage.getItem('token');
+  const admin = jwtDecode(token);
+console.log(admin.companyName);
   const [formData, setFormData] = useState({
+    assigned_to: '',
+    companyName: admin.companyName,
     title: '',
     description: '',
     priority: 'High',
@@ -72,9 +78,10 @@ const AddAdminTasksPage = () => {
     setIsSubmitting(true);
 
     try {
+      console.log(formData);
       await dispatch(createTask(formData)).unwrap();
       toast.success('Task added successfully');
-      navigate('/home/myTasks');
+      navigate('/admin/tasks');
     } catch (error) {
       console.error(error);
       toast.error(error.message || 'Failed to add task');
@@ -85,6 +92,7 @@ const AddAdminTasksPage = () => {
 
   const handleRefresh = () => {
     setFormData({
+      assigned_to: '',
       title: '',
       description: '',
       priority: 'High',
@@ -95,13 +103,17 @@ const AddAdminTasksPage = () => {
     });
   };
 
+  const users = useSelector((state) => state.users.user);
+
+  console.log(users);
+
   return (
     <div className="max-w-4xl mx-auto p-4 sm:p-6">
       {/* Back Button */}
       <button
         type="button"
         className="flex items-center text-violet-600 hover:text-violet-800 transition-colors mb-4 cursor-pointer"
-        onClick={() => navigate('/home/myTasks')}
+        onClick={() => navigate('/admin/tasks')}
       >
         <IoMdArrowRoundBack className="mr-2 h-5 w-5" />
         <span className="text-sm font-medium">Back to Tasks</span>
@@ -126,6 +138,23 @@ const AddAdminTasksPage = () => {
           {/* Main Task Fields */}
           <div className="space-y-6 mb-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <TaskFormDropdown
+                  label="Assigned To"
+                  id="assigned_to"
+                  name="assigned_to"
+                  value={formData.assigned_to}
+                  onChange={handleChange}
+                  options={
+                    Array.isArray(users)
+                      ? users.map((user) => ({
+                          value: user.email,
+                          label: user.name,
+                        }))
+                      : []
+                  }
+                />
+              </div>
               <div className="col-span-2">
                 <TaskFormInputField
                   label="Task Title"

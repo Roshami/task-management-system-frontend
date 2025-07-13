@@ -3,12 +3,16 @@ import Calendar from '../../components/customerDashboard/calender';
 import TaskView from '../../components/customerDashboard/taskView';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import { BiTask } from 'react-icons/bi';
+import { jwtDecode } from 'jwt-decode';
 
 const AdminDashboard = () => {
   const tasks = useSelector((state) => state.tasks.tasks);
 
   // filter pending tasks
   const filteredTasks = tasks.filter((task) => task.status === 'Pending');
+
+  const token = localStorage.getItem('token');
+  const admin = jwtDecode(token);
 
   const today = new Date();
   const yesterday = new Date(today);
@@ -43,7 +47,7 @@ const AdminDashboard = () => {
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
           Dashboard Overview
         </h1>
-        <p className="text-gray-600 mt-1">Manage your tasks and schedule</p>
+        <p className="text-gray-600 mt-1">Manage {admin.companyName} company's tasks and schedule</p>
       </div>
 
       {/* Main Content */}

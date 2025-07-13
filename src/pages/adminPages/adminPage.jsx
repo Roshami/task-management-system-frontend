@@ -9,6 +9,9 @@ import AdminTasksPage from './adminTasks/adminTasksPage';
 import AddAdminTasksPage from './adminTasks/addAdminTasksPage';
 import AddNewUser from './adminUsers/addNewUser';
 import EditUser from './adminUsers/editUsers';
+import AdminEditTasksPage from './adminTasks/admineditTaskPage';
+import AdminViewTaskPage from './adminTasks/adminViewTaskPage';
+
 
 const Admin = () => {
   const dispatch = useDispatch();
@@ -113,10 +116,12 @@ const Admin = () => {
         <Routes>
           <Route path="/" element={<AdminDashboard />} />
           <Route path="/users" element={<AdminUsersPage />} />
-          <Route path="/users/addAdminuUers" element={<AddNewUser />} />
+          <Route path="/users/addAdminUsers" element={<AddNewUser />} />
           <Route path="/users/edit/:id" element={<EditUser />} />
           <Route path="/tasks" element={<AdminTasksPage />} />
           <Route path="/tasks/addadmintasks" element={<AddAdminTasksPage />} />
+          <Route path="/tasks/editTask/:id" element={<AdminEditTasksPage />} />
+          <Route path='/tasks/viewTask/:id' element={<AdminViewTaskPage />} />
         </Routes>
       </div>
     </div>
