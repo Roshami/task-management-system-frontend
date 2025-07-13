@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { IoMdClose } from 'react-icons/io';
 import { useSelector } from 'react-redux';
 
 const Calendar = () => {
@@ -132,20 +133,20 @@ const Calendar = () => {
             <div className="flex gap-2">
               <button
                 onClick={goToPreviousMonth}
-                className="p-2 rounded-lg hover:bg-white/20 transition-colors"
+                className="p-2 rounded-lg hover:bg-white/20 transition-colors cursor-pointer"
                 aria-label="Previous month"
               >
                 <FaChevronLeft />
               </button>
               <button
                 onClick={() => setCurrentDate(new Date())}
-                className="px-3 py-1 text-sm rounded-lg bg-white/20 hover:bg-white/30 transition-colors"
+                className="px-3 py-1 text-sm rounded-lg bg-white/20 hover:bg-white/30 transition-colors cursor-pointer"
               >
                 Today
               </button>
               <button
                 onClick={goToNextMonth}
-                className="p-2 rounded-lg hover:bg-white/20 transition-colors"
+                className="p-2 rounded-lg hover:bg-white/20 transition-colors cursor-pointer"
                 aria-label="Next month"
               >
                 <FaChevronRight />
@@ -179,30 +180,29 @@ const Calendar = () => {
               }`}
               onClick={() => handleDateClick(day)}
             >
-             {day.day && (
-  <div className="p-2 h-full flex flex-col items-center justify-center">
-    <div
-      className={`text-right text-sm font-medium ${
-        day.isToday
-          ? 'bg-violet-600 text-white rounded-full w-4 sm:w-6 h-6 flex items-center justify-center m-auto'
-          : 'text-gray-900'
-      }`}
-    >
-      {day.day}
-    </div>
-    {/* Event Dots */}
-    <div className="flex flex-wrap justify-center mt-1 gap-0.5">
-      {day.events.map((event, index) => (
-        <span
-          key={index}
-          className={`w-2 h-2 rounded-full ${event.color}`}
-          title={event.title}
-        />
-      ))}
-    </div>
-  </div>
-)}
-
+              {day.day && (
+                <div className="p-2 h-full flex flex-col items-center justify-center">
+                  <div
+                    className={`text-right text-sm font-medium ${
+                      day.isToday
+                        ? 'bg-violet-600 text-white rounded-full w-4 sm:w-6 h-6 flex items-center justify-center m-auto'
+                        : 'text-gray-900'
+                    }`}
+                  >
+                    {day.day}
+                  </div>
+                  {/* Event Dots */}
+                  <div className="flex flex-wrap justify-center mt-1 gap-0.5">
+                    {day.events.map((event, index) => (
+                      <span
+                        key={index}
+                        className={`w-2 h-2 rounded-full ${event.color}`}
+                        title={event.title}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -221,21 +221,9 @@ const Calendar = () => {
               </h3>
               <button
                 onClick={() => setSelectedDate(null)}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-500 hover:text-gray-700 cursor-pointer "
               >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+                <IoMdClose className="w-5 h-5" />
               </button>
             </div>
 

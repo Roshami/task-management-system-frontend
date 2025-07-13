@@ -81,7 +81,7 @@ const EditTasksPage = () => {
       {/* Back Button */}
       <button
         type="button"
-        className="flex items-center text-violet-600 hover:text-violet-800 mb-4 transition-colors"
+        className="flex items-center text-violet-600 hover:text-violet-800 mb-4 transition-colors cursor-pointer"
         onClick={() => navigate('/home/mytasks')}
       >
         <IoMdArrowRoundBack className="mr-2 h-5 w-5" />
@@ -229,7 +229,7 @@ const EditTasksPage = () => {
           <div className="flex flex-col-reverse sm:flex-row justify-end gap-3">
             <button
               type="button"
-              className="px-6 py-2.5 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
+              className="px-6 py-2.5 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
               onClick={() => navigate('/home/mytasks')}
             >
               Cancel
@@ -237,7 +237,7 @@ const EditTasksPage = () => {
 
             <button
               type="submit"
-              className="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-lg transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
+              className="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-lg transition-colors disabled:opacity-70 cursor-pointer disabled:cursor-not-allowed flex items-center justify-center"
               disabled={isDone || isSubmitting}
             >
               {isSubmitting ? (

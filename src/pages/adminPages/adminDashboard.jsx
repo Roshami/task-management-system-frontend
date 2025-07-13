@@ -1,14 +1,14 @@
 import { useSelector } from 'react-redux';
 import Calendar from '../../components/customerDashboard/calender';
 import TaskView from '../../components/customerDashboard/taskView';
-import { FaRegCalendarAlt } from 'react-icons/fa';
+import { FaRegBuilding, FaRegCalendarAlt } from 'react-icons/fa';
 import { BiTask } from 'react-icons/bi';
 import { jwtDecode } from 'jwt-decode';
 
 const AdminDashboard = () => {
   const tasks = useSelector((state) => state.tasks.tasks);
 
-  // filter pending tasks
+  // Filter tasks
   const filteredTasks = tasks.filter((task) => task.status === 'Pending');
 
   const token = localStorage.getItem('token');
@@ -17,98 +17,170 @@ const AdminDashboard = () => {
   const today = new Date();
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
+  const lastWeek = new Date(today);
+  lastWeek.setDate(lastWeek.getDate() - 7);
 
   const filteredNewTasks = tasks.filter((task) => {
     const taskDate = new Date(task.createdAt);
     return task.status === 'Pending' && taskDate >= yesterday;
   });
 
-  // filter completed tasks
   const filterCompletedTasks = tasks.filter(
     (task) => task.status === 'Completed'
   );
 
-  //filter completed and completed on this week
-  const filterCompletedTasksWeek = tasks.filter(
-    (task) => task.status === 'Completed' && new Date(task.updatedAt) >= today
-  );
-
-  //filter upcoming tasks in next 7 days
+  const filterCompletedTasksWeek = tasks.filter((task) => {
+    const completedDate = new Date(task.updatedAt);
+    return task.status === 'Completed' && completedDate >= lastWeek;
+  });
 
   const filterUpcomingTasks = tasks.filter((task) => {
     const taskDate = new Date(task.start_date);
-    return task.status === 'In Progress' && taskDate <= today;
+    const weekFromNow = new Date(today);
+    weekFromNow.setDate(weekFromNow.getDate() + 7);
+    return (
+      task.status === 'In Progress' &&
+      taskDate <= weekFromNow &&
+      taskDate >= today
+    );
   });
 
   return (
-    <div className="w-full max-w-7xl mx-auto p-4 sm:p-6">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-6">
       {/* Header */}
-      <div className="mb-6">
+      <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-          Dashboard Overview
+          Welcome back, {admin.name}!
         </h1>
-        <p className="text-gray-600 mt-1">Manage {admin.companyName} company's tasks and schedule</p>
+        <p className="text-gray-600 mt-2">
+          Managing tasks for{' '}
+          <span className="font-medium text-violet-700">
+            {admin.companyName}
+          </span>
+        </p>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {/* Pending Tasks Card */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">
+                Pending Tasks
+              </h3>
+              <p className="text-2xl font-bold text-gray-900 mt-1">
+                {filteredTasks.length}
+              </p>
+            </div>
+            <div className="bg-violet-100 p-3 rounded-lg">
+              <BiTask className="h-6 w-6 text-violet-600" />
+            </div>
+          </div>
+          <div className="mt-4">
+            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-violet-100 text-violet-800">
+              +{filteredNewTasks.length} new today
+            </span>
+          </div>
+        </div>
+
+        {/* Completed Tasks Card */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">
+                Completed
+              </h3>
+              <p className="text-2xl font-bold text-gray-900 mt-1">
+                {filterCompletedTasks.length}
+              </p>
+            </div>
+            <div className="bg-green-100 p-3 rounded-lg">
+              <BiTask className="h-6 w-6 text-green-600" />
+            </div>
+          </div>
+          <div className="mt-4">
+            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+              +{filterCompletedTasksWeek.length} this week
+            </span>
+          </div>
+        </div>
+
+        {/* Upcoming Tasks Card */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">
+                Upcoming
+              </h3>
+              <p className="text-2xl font-bold text-gray-900 mt-1">
+                {filterUpcomingTasks.length}
+              </p>
+            </div>
+            <div className="bg-blue-100 p-3 rounded-lg">
+              <FaRegCalendarAlt className="h-6 w-6 text-blue-600" />
+            </div>
+          </div>
+          <div className="mt-4">
+            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+              Next 7 days
+            </span>
+          </div>
+        </div>
+
+        {/* Company Card */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">
+                Your Company
+              </h3>
+              <p className="text-xl font-bold text-gray-900 mt-1 truncate">
+                {admin.companyName}
+              </p>
+            </div>
+            <div className="bg-violet-100 p-3 rounded-lg">
+              <FaRegBuilding className="h-6 w-6 text-violet-600" />
+            </div>
+          </div>
+          <div className="mt-4">
+            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+              Administrator
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* Main Content */}
       <div className="flex flex-col lg:flex-row gap-6">
-        {/* Calendar Section - Takes full width on mobile, 2/3 on desktop */}
-        <div className="w-full lg:w-1/2">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200  sm:p-6">
-            <h2 className="text-lg font-bold text-gray-900 m-4 flex items-center gap-2">
-              <FaRegCalendarAlt className="w-5 h-5 text-violet-600" />
-              My Calendar
-            </h2>
-            <Calendar />
+        {/* Calendar Section */}
+        <div className="w-full lg:w-2/3">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="p-5 border-b border-gray-200">
+              <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                <FaRegCalendarAlt className="w-5 h-5 text-violet-600" />
+                Company Calendar
+              </h2>
+            </div>
+            <div className="p-4">
+              <Calendar />
+            </div>
           </div>
         </div>
 
-        {/* Task View Section - Takes full width on mobile, 1/3 on desktop */}
-        <div className="w-full lg:w-1/2">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 h-full">
-            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <BiTask className="w-5 h-5 text-violet-600" />
-              Recent Tasks
-            </h2>
-            <TaskView />
+        {/* Task View Section */}
+        <div className="w-full lg:w-1/3">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 h-full">
+            <div className="p-5 border-b border-gray-200">
+              <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                <BiTask className="w-5 h-5 text-violet-600" />
+                Recent Tasks
+              </h2>
+            </div>
+            <div className="p-4">
+              <TaskView />
+            </div>
           </div>
-        </div>
-      </div>
-
-      {/* Quick Stats (Optional) */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
-        <div className="bg-violet-50 rounded-lg p-4 border border-violet-100">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-violet-800">
-              Pending Tasks
-            </h3>
-            <span className="text-lg font-bold text-violet-600">
-              {filteredTasks.length}
-            </span>
-          </div>
-          <p className="text-xs text-violet-600 mt-1">
-            +{filteredNewTasks.length} from yesterday
-          </p>
-        </div>
-        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-gray-800">Completed</h3>
-            <span className="text-lg font-bold text-gray-600">
-              {filterCompletedTasks.length}
-            </span>
-          </div>
-          <p className="text-xs text-gray-600 mt-1">
-            +{filterCompletedTasksWeek.length} this week
-          </p>
-        </div>
-        <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-gray-800">Upcoming</h3>
-            <span className="text-lg font-bold text-gray-600">
-              {filterUpcomingTasks.length}
-            </span>
-          </div>
-          <p className="text-xs text-gray-600 mt-1">Next 7 days</p>
         </div>
       </div>
     </div>

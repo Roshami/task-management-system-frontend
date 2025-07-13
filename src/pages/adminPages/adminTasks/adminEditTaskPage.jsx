@@ -15,7 +15,6 @@ const AdminEditTasksPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
 
   const task = useSelector((state) =>
     state.tasks.tasks.find((task) => task._id === id)
@@ -72,47 +71,58 @@ const AdminEditTasksPage = () => {
 
   const isDone = formData.status === 'Completed';
 
-  const handelDisable = () => {
-    if (isDone) {
-      return true;
-    }
-  };
-
   return (
-    <div className="max-w-4xl mx-auto p-4 sm:p-6">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
       {/* Back Button */}
       <button
-        type="button"
-        className="flex items-center text-violet-600 hover:text-violet-800 mb-4 transition-colors"
         onClick={() => navigate('/admin/tasks')}
+        className="flex items-center gap-2 text-violet-600 hover:text-violet-800 transition-colors mb-6 cursor-pointer"
       >
-        <IoMdArrowRoundBack className="mr-2 h-5 w-5" />
+        <IoMdArrowRoundBack className="w-5 h-5" />
         <span className="text-sm font-medium">Back to Tasks</span>
       </button>
 
       {/* Form Container */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Edit Task</h1>
-            {isDone && (
-              <p className="text-sm text-gray-500 mt-1">
-                This task is marked as completed and cannot be edited
-              </p>
-            )}
+        <div className="p-6 border-b border-gray-200 bg-gray-50">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Edit Task</h1>
+              {isDone && (
+                <p className="text-sm text-gray-600 mt-2">
+                  <span className="font-medium">Note:</span> This task is marked as completed and cannot be edited
+                </p>
+              )}
+            </div>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="p-6">
           {/* Main Task Fields */}
           <div className="space-y-6 mb-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h2 className='block mb-2 font-semibold text-lg text-gray-900'>Assigned To</h2>
-                <p className='w-full p-2 bg-gray-50/50 border border-gray-300 rounded-md'>{formData.assigned_to}</p>
+              {/* Assigned To */}
+              <div className="col-span-2 md:col-span-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Assigned To
+                </label>
+                <div className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900">
+                  {formData.assigned_to}
+                </div>
               </div>
 
+              {/* Status (readonly) */}
+              <div className="col-span-2 md:col-span-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Status
+                </label>
+                <div className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900">
+                  {formData.status}
+                </div>
+              </div>
+
+              {/* Task Title */}
               <div className="col-span-2">
                 <TaskFormInputField
                   label="Task Title"
@@ -121,10 +131,11 @@ const AdminEditTasksPage = () => {
                   value={formData.title}
                   onChange={handleChange}
                   placeholder="Enter task title"
-                  disabled={handelDisable()}
+                  disabled={isDone}
                 />
               </div>
 
+              {/* Task Description */}
               <div className="col-span-2">
                 <TaskFormTextarea
                   label="Task Description"
@@ -134,11 +145,12 @@ const AdminEditTasksPage = () => {
                   onChange={handleChange}
                   placeholder="Describe the task details"
                   rows={4}
-                  disabled={handelDisable()}
+                  disabled={isDone}
                 />
               </div>
 
-              <div className="col-span-2 sm:col-span-1">
+              {/* Priority */}
+              <div className="col-span-2 md:col-span-1">
                 <TaskFormDropdown
                   label="Priority"
                   id="priority"
@@ -150,38 +162,34 @@ const AdminEditTasksPage = () => {
                     { value: 'Medium', label: 'Medium Priority' },
                     { value: 'Low', label: 'Low Priority' },
                   ]}
-                  disabled={handelDisable()}
+                  disabled={isDone}
                 />
               </div>
 
-              <div className="hidden sm:col-span-1"></div>
-
-              <div className="col-span-2 sm:col-span-1">
-                <TaskFormInputField
-                  type="date"
-                  label="Start Date"
-                  id="start_date"
-                  name="start_date"
-                  value={
-                    new Date(formData.start_date).toISOString().split('T')[0]
-                  }
-                  onChange={handleChange}
-                  disabled={handelDisable()}
-                />
-              </div>
-
-              <div className="col-span-1">
-                <TaskFormInputField
-                  type="date"
-                  label="End Date"
-                  id="end_date"
-                  name="end_date"
-                  value={
-                    new Date(formData.end_date).toISOString().split('T')[0]
-                  }
-                  onChange={handleChange}
-                  disabled={handelDisable()}
-                />
+              {/* Dates */}
+              <div className="col-span-2 md:col-span-1 grid grid-cols-2 gap-4">
+                <div>
+                  <TaskFormInputField
+                    type="date"
+                    label="Start Date"
+                    id="start_date"
+                    name="start_date"
+                    value={new Date(formData.start_date).toISOString().split('T')[0]}
+                    onChange={handleChange}
+                    disabled={isDone}
+                  />
+                </div>
+                <div>
+                  <TaskFormInputField
+                    type="date"
+                    label="End Date"
+                    id="end_date"
+                    name="end_date"
+                    value={new Date(formData.end_date).toISOString().split('T')[0]}
+                    onChange={handleChange}
+                    disabled={isDone}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -196,7 +204,7 @@ const AdminEditTasksPage = () => {
                 {formData.subtasks.map((subtask, index) => (
                   <div
                     key={index}
-                    className="p-4 bg-gray-50 rounded-lg border border-gray-200 relative"
+                    className="p-4 bg-gray-50 rounded-lg border border-gray-200"
                   >
                     <div className="flex justify-between items-center mb-3">
                       <h4 className="font-medium text-gray-800">
@@ -212,7 +220,7 @@ const AdminEditTasksPage = () => {
                         value={subtask.subtasks_title}
                         onChange={(e) => handleSubtaskChange(index, e)}
                         placeholder="Enter subtask title"
-                        disabled={handelDisable()}
+                        disabled={isDone}
                       />
 
                       <TaskFormTextarea
@@ -223,7 +231,7 @@ const AdminEditTasksPage = () => {
                         onChange={(e) => handleSubtaskChange(index, e)}
                         placeholder="Describe the subtask details"
                         rows={2}
-                        disabled={handelDisable()}
+                        disabled={isDone}
                       />
                     </div>
                   </div>
@@ -233,10 +241,10 @@ const AdminEditTasksPage = () => {
           )}
 
           {/* Form Actions */}
-          <div className="flex flex-col-reverse sm:flex-row justify-end gap-3">
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-6 border-t border-gray-200">
             <button
               type="button"
-              className="px-6 py-2.5 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
+              className="px-6 py-2.5 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
               onClick={() => navigate('/admin/tasks')}
             >
               Cancel
@@ -244,7 +252,7 @@ const AdminEditTasksPage = () => {
 
             <button
               type="submit"
-              className="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-lg transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
+              className="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-lg transition-colors disabled:opacity-70 cursor-pointer disabled:cursor-not-allowed flex items-center justify-center"
               disabled={isDone || isSubmitting}
             >
               {isSubmitting ? (

@@ -50,7 +50,7 @@ const Home = () => {
                 <li>
                   <Link
                     to="/home"
-                    className={`flex items-center gap-1 sm:gap-2 px-3 py-2 rounded-lg text-[12px] sm:text-base font-medium transition-colors ${
+                    className={`flex items-center gap-1 sm:gap-2 px-3 py-2 rounded-lg text-[12px] cursor-pointer sm:text-base font-medium transition-colors ${
                       isActive('/home')
                         ? 'bg-violet-100 text-violet-700'
                         : 'text-gray-700 hover:bg-gray-100'

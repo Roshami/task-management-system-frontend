@@ -181,7 +181,7 @@ const token = localStorage.getItem('token');
       <div className="flex justify-center gap-1 sm:justify-end sm:gap-2 mt-4">
         <button
           onClick={handleEdit}
-          className={`px-3 py-1.5 text-xs rounded-lg text-violet-600 hover:text-violet-800 hover:bg-violet-50 transition-colors font-medium ${showAddButton ? 'hidden' : 'flex'} items-center gap-1 cursor-pointer`}
+          className={`px-3 py-1.5 text-xs rounded-lg text-violet-600 hover:text-violet-800 hover:bg-violet-50 transition-colors cursor-pointer font-medium ${showAddButton ? 'hidden' : 'flex'} items-center gap-1 cursor-pointer`}
         >
           <FaRegEdit className="w-4 h-4" />
           Edit
@@ -195,7 +195,7 @@ const token = localStorage.getItem('token');
         </button>
         <button
           onClick={handleDelete}
-          className={`px-3 py-1.5 text-xs rounded-lg text-red-600 hover:text-red-800 hover:bg-red-50 transition-colors font-medium ${showAddButton ? 'hidden' : 'flex'} items-center gap-1 cursor-pointer`}
+          className={`px-3 py-1.5 text-xs rounded-lg text-red-600 hover:text-red-800 cursor-pointer hover:bg-red-50 transition-colors font-medium ${showAddButton ? 'hidden' : 'flex'} items-center gap-1 cursor-pointer`}
         >
           <svg
             className="w-4 h-4"
@@ -223,13 +223,13 @@ const token = localStorage.getItem('token');
       <div className="flex justify-end mt-4">
         <button
           onClick={handleTaskDelete}
-          className="px-4 py-2 bg-red-500 text-white rounded-md mr-2"
+          className="px-4 py-2 bg-red-500 text-white rounded-md mr-2 cursor-pointer"
         >
           Delete
         </button>
         <button
           onClick={() => setModalOpen(false)}
-          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md"
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md cursor-pointer"
         >
           Cancel
         </button>

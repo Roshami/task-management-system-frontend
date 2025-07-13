@@ -20,7 +20,7 @@ const SearchBar = ({ value, onChange, onClear }) => {
       {value && (
         <button
           onClick={onClear}
-          className="absolute right-3 text-gray-400 hover:text-gray-600 transition-colors"
+          className="absolute right-3 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
           aria-label="Clear search"
         >
           <FiX className="h-5 w-5" />

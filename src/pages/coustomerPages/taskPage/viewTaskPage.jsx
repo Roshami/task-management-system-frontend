@@ -77,7 +77,7 @@ const ViewTaskPage = () => {
       {/* Back Button */}
       <button
         type="button"
-        className="flex items-center text-violet-600 hover:text-violet-800 mb-4 transition-colors"
+        className="flex items-center text-violet-600 hover:text-violet-800 mb-4 transition-colors cursor-pointer"
         onClick={() => navigate('/home/mytasks')}
       >
         <IoMdArrowRoundBack className="mr-2 h-5 w-5" />

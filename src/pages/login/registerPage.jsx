@@ -87,7 +87,7 @@ const RegisterPage = () => {
           <div className="flex justify-center space-x-2 sm:space-x-4">
             <Link
               to="/signup/personal"
-              className={`px-4 py-2 text-sm sm:text-base rounded-lg font-medium transition-all duration-200 ${
+              className={`px-4 py-2 text-sm cursor-pointer sm:text-base rounded-lg font-medium transition-all duration-200 ${
                 isActive('/signup/personal')
                   ? 'bg-violet-100 dark:bg-violet-900/50 text-violet-700 dark:text-violet-300 shadow-inner'
                   : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -97,10 +97,10 @@ const RegisterPage = () => {
             </Link>
             <Link
               to="/signup/company"
-              className={`px-4 py-2 text-sm sm:text-base rounded-lg font-medium transition-all duration-200 ${
+              className={`px-4 py-2 text-sm cursor-pointer sm:text-base rounded-lg font-medium transition-all duration-200 ${
                 isActive('/signup/company')
                   ? 'bg-violet-100 dark:bg-violet-900/50 text-violet-700 dark:text-violet-300 shadow-inner'
-                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 '
               }`}
             >
               Company
@@ -118,7 +118,7 @@ const RegisterPage = () => {
             Already have an account?{' '}
             <Link
               to="/login"
-              className="font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors"
+              className="font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors cursor-pointer"
             >
               Sign in
             </Link>

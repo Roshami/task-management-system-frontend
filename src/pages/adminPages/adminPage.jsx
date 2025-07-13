@@ -61,7 +61,7 @@ const Admin = () => {
                 <li className="flex-1 sm:flex-none">
                   <Link
                     to="/admin"
-                    className={`flex flex-col sm:flex-row items-center gap-1 sm:gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
+                    className={`flex flex-col cursor-pointer sm:flex-row items-center gap-1 sm:gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
                       isActive('/admin')
                         ? 'bg-violet-100 text-violet-700'
                         : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
@@ -74,7 +74,7 @@ const Admin = () => {
                 <li className="flex-1 sm:flex-none">
                   <Link
                     to="/admin/users"
-                    className={`flex flex-col sm:flex-row items-center gap-1 sm:gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
+                    className={`flex flex-col cursor-pointer sm:flex-row items-center gap-1 sm:gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
                       isActive('/admin/users')
                         ? 'bg-violet-100 text-violet-700'
                         : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
@@ -87,7 +87,7 @@ const Admin = () => {
                 <li className="flex-1 sm:flex-none">
                   <Link
                     to="/admin/tasks"
-                    className={`flex flex-col sm:flex-row items-center gap-1 sm:gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
+                    className={`flex flex-col cursor-pointer sm:flex-row items-center gap-1 sm:gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
                       isActive('/admin/tasks')
                         ? 'bg-violet-100 text-violet-700'
                         : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
@@ -102,7 +102,7 @@ const Admin = () => {
 
             <Link
               to="/"
-              className="flex items-center gap-1 sm:gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+              className="flex items-center gap-1 sm:gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors cursor-pointer"
             >
               <MdLogout className="text-lg sm:text-xl" />
               <span>Logout</span>

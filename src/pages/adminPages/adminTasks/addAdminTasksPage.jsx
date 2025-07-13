@@ -1,4 +1,4 @@
-import { use, useState } from 'react';
+import { useState } from 'react';
 import TaskFormInputField from '../../../components/myTasks/tasksForm/tasksFormInputFiled';
 import TaskFormTextarea from '../../../components/myTasks/tasksForm/tasksFormTextarea';
 import TaskFormDropdown from '../../../components/myTasks/tasksForm/tasksFromDropdown';
@@ -14,13 +14,13 @@ import { jwtDecode } from 'jwt-decode';
 const AddAdminTasksPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSubtasks, setShowSubtasks] = useState(false);
 
-const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token');
   const admin = jwtDecode(token);
-console.log(admin.companyName);
+  const users = useSelector((state) => state.users.user);
+
   const [formData, setFormData] = useState({
     assigned_to: '',
     companyName: admin.companyName,
@@ -78,13 +78,12 @@ console.log(admin.companyName);
     setIsSubmitting(true);
 
     try {
-      console.log(formData);
       await dispatch(createTask(formData)).unwrap();
-      toast.success('Task added successfully');
+      toast.success('Task created successfully');
       navigate('/admin/tasks');
     } catch (error) {
       console.error(error);
-      toast.error(error.message || 'Failed to add task');
+      toast.error(error.message || 'Failed to create task');
     } finally {
       setIsSubmitting(false);
     }
@@ -103,58 +102,57 @@ console.log(admin.companyName);
     });
   };
 
-  const users = useSelector((state) => state.users.user);
-
-  console.log(users);
-
   return (
-    <div className="max-w-4xl mx-auto p-4 sm:p-6">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
       {/* Back Button */}
       <button
-        type="button"
-        className="flex items-center text-violet-600 hover:text-violet-800 transition-colors mb-4 cursor-pointer"
         onClick={() => navigate('/admin/tasks')}
+        className="flex items-center gap-2 text-violet-600 hover:text-violet-800 transition-colors mb-6 cursor-pointer"
       >
-        <IoMdArrowRoundBack className="mr-2 h-5 w-5" />
+        <IoMdArrowRoundBack className="w-5 h-5" />
         <span className="text-sm font-medium">Back to Tasks</span>
       </button>
 
       {/* Form Container */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-          <h1 className="text-2xl font-bold text-gray-900">Create New Task</h1>
-          <button
-            type="button"
-            className="flex items-center text-violet-600 hover:text-violet-800 text-sm font-medium transition-colors cursor-pointer"
-            onClick={handleRefresh}
-          >
-            <FiRefreshCw className="mr-2 h-4 w-4" />
-            Reset Form
-          </button>
+        <div className="p-6 border-b border-gray-200 bg-gray-50">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Create New Task</h1>
+              <p className="text-sm text-gray-600 mt-1">Add a new task for {admin.companyName}</p>
+            </div>
+            <button
+              onClick={handleRefresh}
+              className="flex items-center gap-2 text-violet-600 hover:text-violet-800 text-sm font-medium transition-colors cursor-pointer"
+            >
+              <FiRefreshCw className="w-4 h-4" />
+              Reset Form
+            </button>
+          </div>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="p-6">
           {/* Main Task Fields */}
-          <div className="space-y-6 mb-8">
+          <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
+              {/* Assigned To */}
+              <div className="col-span-2 md:col-span-1">
                 <TaskFormDropdown
-                  label="Assigned To"
+                  label="Assign To"
                   id="assigned_to"
                   name="assigned_to"
                   value={formData.assigned_to}
                   onChange={handleChange}
-                  options={
-                    Array.isArray(users)
-                      ? users.map((user) => ({
-                          value: user.email,
-                          label: user.name,
-                        }))
-                      : []
-                  }
+                  options={users?.map(user => ({
+                    value: user.email,
+                    label: user.name
+                  })) || []}
+                  required
                 />
               </div>
+
+              {/* Task Title */}
               <div className="col-span-2">
                 <TaskFormInputField
                   label="Task Title"
@@ -167,6 +165,7 @@ console.log(admin.companyName);
                 />
               </div>
 
+              {/* Task Description */}
               <div className="col-span-2">
                 <TaskFormTextarea
                   label="Task Description"
@@ -179,7 +178,8 @@ console.log(admin.companyName);
                 />
               </div>
 
-              <div className="col-span-2">
+              {/* Priority */}
+              <div className="col-span-2 md:col-span-1">
                 <TaskFormDropdown
                   label="Priority"
                   id="priority"
@@ -194,97 +194,90 @@ console.log(admin.companyName);
                 />
               </div>
 
-              <div className="col-span-2 sm:col-span-1">
-                <TaskFormInputField
-                  type="date"
-                  label="Start Date"
-                  id="start_date"
-                  name="start_date"
-                  value={formData.start_date}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className="col-span-2 sm:col-span-1">
-                <TaskFormInputField
-                  type="date"
-                  label="End Date"
-                  id="end_date"
-                  name="end_date"
-                  value={formData.end_date}
-                  onChange={handleChange}
-                />
+              {/* Dates */}
+              <div className="col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <TaskFormInputField
+                    type="date"
+                    label="Start Date"
+                    id="start_date"
+                    name="start_date"
+                    value={formData.start_date}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div>
+                  <TaskFormInputField
+                    type="date"
+                    label="End Date"
+                    id="end_date"
+                    name="end_date"
+                    value={formData.end_date}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
               </div>
             </div>
           </div>
 
           {/* Subtasks Section */}
-          <div className="mb-8">
+          <div className="mt-8">
             <button
               type="button"
-              className="flex items-center text-violet-600 hover:text-violet-800 font-medium mb-4 transition-colors cursor-pointer"
               onClick={() => setShowSubtasks(!showSubtasks)}
+              className="flex items-center gap-2 text-violet-600 hover:text-violet-800 font-medium transition-colors cursor-pointer"
             >
               {showSubtasks ? (
-                <FaMinus className="mr-2 h-3 w-3" />
+                <FaMinus className="w-4 h-4" />
               ) : (
-                <FaPlus className="mr-2 h-3 w-3" />
+                <FaPlus className="w-4 h-4" />
               )}
               {showSubtasks ? 'Hide Subtasks' : 'Add Subtasks'}
             </button>
 
             {showSubtasks && (
-              <div className="space-y-4 pl-4 border-l-2 border-gray-200">
-                {formData.subtasks.length > 0 && (
-                  <div className="space-y-4">
-                    {formData.subtasks.map((subtask, index) => (
-                      <div
-                        key={index}
-                        className="p-4 bg-gray-50 rounded-lg border border-gray-200 relative"
-                      >
-                        <button
-                          type="button"
-                          className="absolute top-3 right-3 text-red-500 hover:text-red-700 transition-colors cursor-pointer"
-                          onClick={() => removeSubtask(index)}
-                        >
-                          <FaMinus className="h-4 w-4" />
-                        </button>
+              <div className="mt-4 space-y-4 pl-4 border-l-2 border-violet-200">
+                {formData.subtasks.map((subtask, index) => (
+                  <div key={index} className="p-4 bg-gray-50 rounded-lg border border-gray-200 relative">
+                    <button
+                      type="button"
+                      onClick={() => removeSubtask(index)}
+                      className="absolute top-4 right-4 text-red-500 hover:text-red-700 transition-colors cursor-pointer"
+                    >
+                      <FaMinus className="w-4 h-4" />
+                    </button>
 
-                        <h4 className="font-medium text-gray-800 mb-3">
-                          Subtask {index + 1}
-                        </h4>
+                    <h4 className="font-medium text-gray-800 mb-4">Subtask {index + 1}</h4>
 
-                        <div className="space-y-4">
-                          <TaskFormInputField
-                            label="Subtask Title"
-                            id={`subtasks_title_${index}`}
-                            name="subtasks_title"
-                            value={subtask.subtasks_title}
-                            onChange={(e) => handleSubtaskChange(index, e)}
-                            placeholder="Enter subtask title"
-                          />
+                    <div className="space-y-4">
+                      <TaskFormInputField
+                        label="Subtask Title"
+                        name="subtasks_title"
+                        value={subtask.subtasks_title}
+                        onChange={(e) => handleSubtaskChange(index, e)}
+                        placeholder="Enter subtask title"
+                      />
 
-                          <TaskFormTextarea
-                            label="Subtask Description"
-                            id={`subtasks_description_${index}`}
-                            name="subtasks_description"
-                            value={subtask.subtasks_description}
-                            onChange={(e) => handleSubtaskChange(index, e)}
-                            placeholder="Describe the subtask details"
-                            rows={2}
-                          />
-                        </div>
-                      </div>
-                    ))}
+                      <TaskFormTextarea
+                        label="Subtask Description"
+                        name="subtasks_description"
+                        value={subtask.subtasks_description}
+                        onChange={(e) => handleSubtaskChange(index, e)}
+                        placeholder="Describe the subtask details"
+                        rows={2}
+                      />
+                    </div>
                   </div>
-                )}
+                ))}
 
                 <button
                   type="button"
-                  className="flex items-center text-violet-600 hover:text-violet-800 text-sm font-medium transition-colors cursor-pointer"
                   onClick={addSubtask}
+                  className="flex items-center gap-2 text-violet-600 hover:text-violet-800 text-sm font-medium transition-colors mt-2 cursor-pointer"
                 >
-                  <FaPlus className="mr-2 h-3 w-3" />
+                  <FaPlus className="w-3 h-3" />
                   Add Another Subtask
                 </button>
               </div>
@@ -292,18 +285,17 @@ console.log(admin.companyName);
           </div>
 
           {/* Form Actions */}
-          <div className="flex flex-col-reverse sm:flex-row justify-end gap-3">
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-8 mt-8 border-t border-gray-200">
             <button
               type="button"
+              onClick={() => navigate('/admin/tasks')}
               className="px-6 py-2.5 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
-              onClick={() => navigate('/home/myTasks')}
             >
               Cancel
             </button>
-
             <button
               type="submit"
-              className="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-lg transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center cursor-pointer"
+              className="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-lg transition-colors disabled:opacity-70 cursor-pointer disabled:cursor-not-allowed flex items-center justify-center"
               disabled={isSubmitting}
             >
               {isSubmitting ? (

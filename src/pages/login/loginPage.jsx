@@ -115,7 +115,7 @@ const LoginPage = () => {
             whileTap={{ scale: 0.98 }}
             type="submit"
             disabled={loading}
-            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 ${
+            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 cursor-pointer ${
               loading ? 'opacity-70 cursor-not-allowed' : ''
             }`}
           >
@@ -154,7 +154,7 @@ const LoginPage = () => {
           <motion.a
             whileHover={{ scale: 1.05 }}
             href="#"
-            className="font-medium text-violet-600 hover:text-violet-500 dark:text-violet-400"
+            className="font-medium text-violet-600 hover:text-violet-500 cursor-pointer dark:text-violet-400"
           >
             Sign up
           </motion.a>
