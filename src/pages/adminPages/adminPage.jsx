@@ -110,6 +110,7 @@ const Admin = () => {
         <Routes>
           <Route path="/" element={<AdminDashboard />} />
           <Route path="/users" element={<AdminUsersPage />} />
+          <Route path="/users/addAdminuUers" element={<AdminUsersPage />} />
           <Route path="/tasks" element={<AdminTasksPage />} />
           <Route path='/tasks/addadmintasks' element={<AddAdminTasksPage />} />
         </Routes>
