@@ -6,6 +6,7 @@ const TaskFormInputField = ({
   id,
   name,
   value,
+  placeholder,
   onChange,
   disabled,
 }) => {
@@ -25,7 +26,7 @@ const TaskFormInputField = ({
         required
         onChange={onChange}
         disabled={disabled}
-        placeholder={label}
+        placeholder={placeholder}
         className="w-full p-2 bg-gray-50/50 border border-gray-300 rounded-md"
       />
     </div>
@@ -38,6 +39,7 @@ TaskFormInputField.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
 };

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import SearchBar from '../../components/searchbar';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { MdLogout, MdDashboard, MdTask, MdPeople } from 'react-icons/md';
@@ -8,6 +7,8 @@ import AdminDashboard from './adminDashboard';
 import AdminUsersPage from './AdminUsers/adminUsersPage';
 import AdminTasksPage from './adminTasks/adminTasksPage';
 import AddAdminTasksPage from './adminTasks/addAdminTasksPage';
+import AddNewUser from './adminUsers/addNewUser';
+import EditUser from './adminUsers/editUsers';
 
 const Admin = () => {
   const dispatch = useDispatch();
@@ -35,9 +36,11 @@ const Admin = () => {
                 alt="logo"
                 className="h-8 sm:h-10 object-contain"
               />
-              <h1 className="text-sm sm:text-lg font-bold text-gray-800">Admin Dashboard</h1>
+              <h1 className="text-sm sm:text-lg font-bold text-gray-800">
+                Admin Dashboard
+              </h1>
             </div>
-            
+
             <div className="w-full sm:w-64 md:w-96">
               <SearchBar
                 value={searchTerm}
@@ -110,9 +113,10 @@ const Admin = () => {
         <Routes>
           <Route path="/" element={<AdminDashboard />} />
           <Route path="/users" element={<AdminUsersPage />} />
-          <Route path="/users/addAdminuUers" element={<AdminUsersPage />} />
+          <Route path="/users/addAdminuUers" element={<AddNewUser />} />
+          <Route path="/users/edit/:id" element={<EditUser />} />
           <Route path="/tasks" element={<AdminTasksPage />} />
-          <Route path='/tasks/addadmintasks' element={<AddAdminTasksPage />} />
+          <Route path="/tasks/addadmintasks" element={<AddAdminTasksPage />} />
         </Routes>
       </div>
     </div>
