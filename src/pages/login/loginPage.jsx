@@ -4,7 +4,7 @@ import InputField from '../../components/loginForm/inputField';
 import './loginPage.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -146,7 +146,10 @@ const LoginPage = () => {
           </motion.button>
         </form>
 
-        <div className="text-center text-sm text-gray-600 dark:text-gray-400">
+        <Link
+          to="/signup"
+          className="text-center text-sm text-gray-600 dark:text-gray-400"
+        >
           Don't have an account?{' '}
           <motion.a
             whileHover={{ scale: 1.05 }}
@@ -155,7 +158,7 @@ const LoginPage = () => {
           >
             Sign up
           </motion.a>
-        </div>
+        </Link>
       </motion.div>
     </div>
   );
