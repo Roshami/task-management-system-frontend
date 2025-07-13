@@ -4,7 +4,7 @@ import TaskView from '../../components/customerDashboard/taskView';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import { BiTask } from 'react-icons/bi';
 
-const Dashboard = () => {
+const AdminDashboard = () => {
   const tasks = useSelector((state) => state.tasks.tasks);
 
   // filter pending tasks
@@ -111,4 +111,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default AdminDashboard;
