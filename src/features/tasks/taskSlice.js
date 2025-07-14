@@ -169,20 +169,21 @@ export const tasksSlice = createSlice({
 export const { setSearchTerm, setStatusFilter } = tasksSlice.actions;
 
 export const selectFilteredTasks = (state) => {
-  const search = state.tasks.searchTerm.toLowerCase();
+  const search = state.tasks.searchTerm?.toLowerCase() || '';
   const status = state.tasks.statusFilter;
 
   return state.tasks.tasks.filter((task) => {
     const matchesSearch =
-      task.title.toLowerCase().includes(search) ||
-      task.description.toLowerCase().includes(search);
+      (task.title?.toLowerCase().includes(search) ?? false) ||
+      (task.description?.toLowerCase().includes(search) ?? false);
 
     const matchesStatus =
-      status === 'All' || task.status.toLowerCase() === status.toLowerCase();
+      status === 'All' || task.status?.toLowerCase() === status.toLowerCase();
 
     return matchesSearch && matchesStatus;
   });
 };
+
 
 
 export default tasksSlice.reducer;
