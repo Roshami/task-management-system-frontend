@@ -8,6 +8,7 @@ import TaskFormTextarea from '../../../components/myTasks/tasksForm/tasksFormTex
 import TaskFormDropdown from '../../../components/myTasks/tasksForm/tasksFromDropdown';
 import { FiLoader } from 'react-icons/fi';
 import toast from 'react-hot-toast';
+import { fetchUsers } from '../../../features/users/userSlice';
 
 const AdminEditTasksPage = () => {
   const params = useParams();
@@ -15,6 +16,7 @@ const AdminEditTasksPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const users = useSelector((state) => state.users.users);
 
   const task = useSelector((state) =>
     state.tasks.tasks.find((task) => task._id === id)
@@ -37,6 +39,8 @@ const AdminEditTasksPage = () => {
     } else {
       setFormData(task);
     }
+
+    dispatch(fetchUsers());
   }, [task, dispatch]);
 
   const handleChange = (e) => {
@@ -54,6 +58,12 @@ const AdminEditTasksPage = () => {
       subtasks: newSubtasks,
     });
   };
+
+  if (!formData.assigned_to) {
+    toast.error('Please select a user');
+    setIsSubmitting(false);
+    return;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -91,7 +101,8 @@ const AdminEditTasksPage = () => {
               <h1 className="text-2xl font-bold text-gray-900">Edit Task</h1>
               {isDone && (
                 <p className="text-sm text-gray-600 mt-2">
-                  <span className="font-medium">Note:</span> This task is marked as completed and cannot be edited
+                  <span className="font-medium">Note:</span> This task is marked
+                  as completed and cannot be edited
                 </p>
               )}
             </div>
@@ -104,12 +115,24 @@ const AdminEditTasksPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Assigned To */}
               <div className="col-span-2 md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Assigned To
-                </label>
-                <div className="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900">
-                  {formData.assigned_to}
-                </div>
+                
+                <TaskFormDropdown
+                    label="Assigned To"
+                    id="assigned_to"
+                    name="assigned_to"
+                    value={formData.assigned_to}
+                    onChange={handleChange}
+                    options={[
+                      { value: '', label: 'Select name' },
+                      ...[...users]
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .map((user) => ({
+                          value: user.email,
+                          label: user.name,
+                        })),
+                    ]}
+                    disabled={isDone}
+                  />
               </div>
 
               {/* Status (readonly) */}
@@ -174,7 +197,9 @@ const AdminEditTasksPage = () => {
                     label="Start Date"
                     id="start_date"
                     name="start_date"
-                    value={new Date(formData.start_date).toISOString().split('T')[0]}
+                    value={
+                      new Date(formData.start_date).toISOString().split('T')[0]
+                    }
                     onChange={handleChange}
                     disabled={isDone}
                   />
@@ -185,7 +210,9 @@ const AdminEditTasksPage = () => {
                     label="End Date"
                     id="end_date"
                     name="end_date"
-                    value={new Date(formData.end_date).toISOString().split('T')[0]}
+                    value={
+                      new Date(formData.end_date).toISOString().split('T')[0]
+                    }
                     onChange={handleChange}
                     disabled={isDone}
                   />

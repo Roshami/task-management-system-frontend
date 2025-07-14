@@ -14,7 +14,7 @@ const EditUser = () => {
   const id = params.id;
   const { loading } = useSelector((state) => state.users);
   const user = useSelector((state) =>
-    state.users.user.find((user) => user._id === id)
+    state.users.users?.find((user) => user._id === id)
   );
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,14 +31,14 @@ const EditUser = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (user) {
-      setFormData({
-        name: user.name || '',
-        email: user.email || '',
-        password: user.password || '',
-        isPersonal: user.isPersonal || false,
-        companyName: user.companyName || '',
-      });
+    if (!user) {
+      return (
+        <div className="flex items-center justify-center min-h-screen">
+          <p className="text-gray-600 text-lg font-medium">
+            User not found. Please check the URL or go back.
+          </p>
+        </div>
+      );
     }
   }, [user]);
 

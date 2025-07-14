@@ -75,11 +75,13 @@ export const deleteUser = createAsyncThunk(
 export const userSlice = createSlice({
   name: 'user',
   initialState: {
-    user: [],
+    users: [],
+    loading: false,
+    error: null,
   },
   reducers: {
     setUser: (state, action) => {
-      state.user = action.payload;
+      state.users = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -91,7 +93,7 @@ export const userSlice = createSlice({
       })
       .addCase(createUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
+        state.users.push(action.payload);
       })
       .addCase(createUser.rejected, (state, action) => {
         state.loading = false;
@@ -105,7 +107,7 @@ export const userSlice = createSlice({
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
+        state.users = action.payload;
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.loading = false;
@@ -120,7 +122,12 @@ export const userSlice = createSlice({
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
+        const index = state.users.findIndex(
+          (u) => u._id === action.payload._id
+        );
+        if (index !== -1) {
+          state.users[index] = action.payload;
+        }
       })
       .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
@@ -135,7 +142,8 @@ export const userSlice = createSlice({
       })
       .addCase(deleteUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
+        const deletedId = action.payload._id || action.meta.arg;
+        state.users = state.users.filter((user) => user._id !== deletedId);
       })
       .addCase(deleteUser.rejected, (state, action) => {
         state.loading = false;

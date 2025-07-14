@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TaskFormInputField from '../../../components/myTasks/tasksForm/tasksFormInputFiled';
 import TaskFormTextarea from '../../../components/myTasks/tasksForm/tasksFormTextarea';
 import TaskFormDropdown from '../../../components/myTasks/tasksForm/tasksFromDropdown';
@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTask } from '../../../features/tasks/taskSlice';
 import { jwtDecode } from 'jwt-decode';
+import { fetchUsers } from '../../../features/users/userSlice';
 
 const AddAdminTasksPage = () => {
   const dispatch = useDispatch();
@@ -19,7 +20,11 @@ const AddAdminTasksPage = () => {
 
   const token = localStorage.getItem('token');
   const admin = jwtDecode(token);
-  const users = useSelector((state) => state.users.user);
+  const users = useSelector((state) => state.users.users);
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, [dispatch]);
 
   const [formData, setFormData] = useState({
     assigned_to: '',
@@ -119,8 +124,12 @@ const AddAdminTasksPage = () => {
         <div className="p-6 border-b border-gray-200 bg-gray-50">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Create New Task</h1>
-              <p className="text-sm text-gray-600 mt-1">Add a new task for {admin.companyName}</p>
+              <h1 className="text-2xl font-bold text-gray-900">
+                Create New Task
+              </h1>
+              <p className="text-sm text-gray-600 mt-1">
+                Add a new task for {admin.companyName}
+              </p>
             </div>
             <button
               onClick={handleRefresh}
@@ -144,10 +153,19 @@ const AddAdminTasksPage = () => {
                   name="assigned_to"
                   value={formData.assigned_to}
                   onChange={handleChange}
-                  options={users?.map(user => ({
-                    value: user.email,
-                    label: user.name
-                  })) || []}
+                  options={
+                    users
+                      ? [
+                          { value: '', label: 'Select name' }, // <-- Add this line
+                          ...[...users]
+                            .sort((a, b) => a.name.localeCompare(b.name))
+                            .map((user) => ({
+                              value: user.email,
+                              label: user.name,
+                            })),
+                        ]
+                      : []
+                  }
                   required
                 />
               </div>
@@ -240,7 +258,10 @@ const AddAdminTasksPage = () => {
             {showSubtasks && (
               <div className="mt-4 space-y-4 pl-4 border-l-2 border-violet-200">
                 {formData.subtasks.map((subtask, index) => (
-                  <div key={index} className="p-4 bg-gray-50 rounded-lg border border-gray-200 relative">
+                  <div
+                    key={index}
+                    className="p-4 bg-gray-50 rounded-lg border border-gray-200 relative"
+                  >
                     <button
                       type="button"
                       onClick={() => removeSubtask(index)}
@@ -249,7 +270,9 @@ const AddAdminTasksPage = () => {
                       <FaMinus className="w-4 h-4" />
                     </button>
 
-                    <h4 className="font-medium text-gray-800 mb-4">Subtask {index + 1}</h4>
+                    <h4 className="font-medium text-gray-800 mb-4">
+                      Subtask {index + 1}
+                    </h4>
 
                     <div className="space-y-4">
                       <TaskFormInputField

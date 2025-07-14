@@ -43,7 +43,7 @@ export const fetchTasks = createAsyncThunk('myTasks', async () => {
 
 // update task
 export const updateTask = createAsyncThunk(
-  'myTasks',
+  'myTasks/updateTask',
   async ({ id, updated }, thunkAPI) => {
     try {
       const token = localStorage.getItem('token');
@@ -61,13 +61,12 @@ export const updateTask = createAsyncThunk(
 
 // delete task
 export const deleteTask = createAsyncThunk(
-  'myTasks',
+  'myTasks/deleteTask',
   async (id, thunkAPI) => {
     try {
       const token = localStorage.getItem('token');
-      console.log(token);
-      console.log('id', id);
-      const response = await axios.delete(`${API_URL}/api/tasks/${id.id}`, {
+      
+      const response = await axios.delete(`${API_URL}/api/tasks/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -127,7 +126,43 @@ export const tasksSlice = createSlice({
         state.error = action.error.message;
       });
 
-      
+      //update task
+      builder
+      .addCase(updateTask.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateTask.fulfilled, (state, action) => {
+        state.loading = false;
+        const updatedTask = action.payload;
+        const index = state.tasks.findIndex(
+          (task) => task._id === updatedTask._id
+        );
+        if (index !== -1) {
+          state.tasks[index] = updatedTask;
+        }
+      })
+      .addCase(updateTask.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
+
+      //delete task
+      builder
+      .addCase(deleteTask.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteTask.fulfilled, (state, action) => {
+        state.loading = false;
+        state.tasks = state.tasks.filter(
+          (task) => task._id !== action.payload._id
+        );
+      })
+      .addCase(deleteTask.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
   },
 });
 

@@ -5,20 +5,38 @@ import { fetchUsers } from '../../../features/users/userSlice';
 import LoadingSpinner from '../../../components/loadingSpinner';
 import { FaPlus, FaUsers, FaSearch } from 'react-icons/fa';
 import UsersTable from '../../../components/adminUsers/usersTable';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 const AdminUsersPage = () => {
   const dispatch = useDispatch();
-  const users = useSelector((state) => state.users.user);
+  const users = useSelector((state) => state.users.users);
   const { loadding, error } = useSelector((state) => state.users);
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   useEffect(() => {
+    setCurrentPage(1);
     dispatch(fetchUsers());
   }, [dispatch]);
 
-  const filteredUsers = users.filter(user => 
-    user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  if (!Array.isArray(users)) {
+    console.error('users is not an array:', users);
+    return null;
+  }
+
+  const filteredUsers = Array.isArray(users)
+    ? users.filter(
+        (user) =>
+          user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.email?.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : [];
+
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  const paginatedUsers = filteredUsers.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
   );
 
   if (loadding) {
@@ -50,7 +68,7 @@ const AdminUsersPage = () => {
               Manage all registered users in the system
             </p>
           </div>
-          
+
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <div className="relative w-full sm:w-64">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -64,7 +82,7 @@ const AdminUsersPage = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            
+
             <Link
               to="/admin/users/addAdminUsers"
               className="inline-flex items-center justify-center px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-medium rounded-lg transition-colors duration-200 shadow-sm whitespace-nowrap cursor-pointer"
@@ -77,10 +95,12 @@ const AdminUsersPage = () => {
 
         <div className="flex items-center justify-between bg-violet-50 px-4 py-3 rounded-lg border border-violet-100">
           <p className="text-sm text-violet-800">
-            Showing <span className="font-semibold">{filteredUsers.length}</span> {filteredUsers.length === 1 ? 'user' : 'users'}
+            Showing{' '}
+            <span className="font-semibold">{filteredUsers.length}</span>{' '}
+            {filteredUsers.length === 1 ? 'user' : 'users'}
           </p>
           {searchTerm && (
-            <button 
+            <button
               onClick={() => setSearchTerm('')}
               className="text-sm text-violet-600 hover:text-violet-800 font-medium cursor-pointer"
             >
@@ -103,13 +123,6 @@ const AdminUsersPage = () => {
                 ? 'Try adjusting your search or clear the search field'
                 : 'Get started by adding your first user'}
             </p>
-            <Link
-              to="/admin/users/addAdminUsers"
-              className="inline-flex items-center px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm"
-            >
-              <FaPlus className="mr-2" />
-              Add New User
-            </Link>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -143,7 +156,7 @@ const AdminUsersPage = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredUsers
+                {paginatedUsers
                   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                   .map((user) => (
                     <UsersTable
@@ -160,6 +173,73 @@ const AdminUsersPage = () => {
           </div>
         )}
       </div>
+
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between mt-6">
+          <div className="text-sm text-gray-700">
+            Showing{' '}
+            <span className="font-medium">
+              {(currentPage - 1) * itemsPerPage + 1}
+            </span>{' '}
+            to{' '}
+            <span className="font-medium">
+              {Math.min(currentPage * itemsPerPage, filteredUsers.length)}
+            </span>{' '}
+            of <span className="font-medium">{filteredUsers.length}</span> users
+          </div>
+          <div className="flex space-x-2">
+            <button
+              onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+              disabled={currentPage === 1}
+              className={`px-3 py-1 rounded-md border ${
+                currentPage === 1
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  : 'bg-white text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              <FiChevronLeft className="h-5 w-5" />
+            </button>
+            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+              let pageNum;
+              if (totalPages <= 5) {
+                pageNum = i + 1;
+              } else if (currentPage <= 3) {
+                pageNum = i + 1;
+              } else if (currentPage >= totalPages - 2) {
+                pageNum = totalPages - 4 + i;
+              } else {
+                pageNum = currentPage - 2 + i;
+              }
+              return (
+                <button
+                  key={pageNum}
+                  onClick={() => setCurrentPage(pageNum)}
+                  className={`px-3 py-1 rounded-md border ${
+                    currentPage === pageNum
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-white text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              );
+            })}
+            <button
+              onClick={() =>
+                setCurrentPage(Math.min(totalPages, currentPage + 1))
+              }
+              disabled={currentPage === totalPages}
+              className={`px-3 py-1 rounded-md border ${
+                currentPage === totalPages
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  : 'bg-white text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              <FiChevronRight className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
