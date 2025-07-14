@@ -18,7 +18,7 @@ It includes email verification with OTP, secure JWT authentication, task filteri
 
 ## 🔧 Tech Stack
 
-- **Frontend:** React.js, Redux, Axios, Tailwind CSS, Framer Motion, React Router
+- **Frontend:** React.js, Redux, Axios, Tailwind CSS, Framer Motion, React Router, - Responsive Design (Mobile, Tablet, Desktop)
 - **Backend:** Node.js (v20.18.0), Express.js, MongoDB, JWT
 - **Auth/Security:** Nodemailer (OTP Email Verification), bcrypt (Password Hashing)
 
@@ -30,6 +30,7 @@ It includes email verification with OTP, secure JWT authentication, task filteri
 - Manage their own tasks (create, read, update, delete)
 - Search and filter tasks by status, priority, etc.
 - View the dashboard with task statistics (pie chart)
+- Fully responsive on all devices
 
 ### Company Users
 
