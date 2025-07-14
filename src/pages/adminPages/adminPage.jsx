@@ -4,7 +4,7 @@ import { MdLogout, MdDashboard, MdTask, MdPeople } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchTerm } from '../../features/tasks/taskSlice';
 import AdminDashboard from './adminDashboard';
-import AdminUsersPage from './AdminUsers/adminUsersPage';
+import AdminUsersPage from './adminUsers/adminUsersPage';
 import AdminTasksPage from './adminTasks/adminTasksPage';
 import AddAdminTasksPage from './adminTasks/addAdminTasksPage';
 import AddNewUser from './adminUsers/addNewUser';
