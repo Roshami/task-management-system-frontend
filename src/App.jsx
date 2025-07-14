@@ -6,6 +6,7 @@ import Home from './pages/coustomerPages/home';
 import RegisterPage from './pages/login/registerPage';
 import AdminPage from './pages/adminPages/adminPage';
 import VerifyEmail from './pages/login/verifyEmail/verifyEmail';
+import ResetPassword from './pages/login/resetPassword/resetPassword';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/home/*" element={<Home />} />
           <Route path="/admin/*" element={<AdminPage />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </BrowserRouter>
     </>

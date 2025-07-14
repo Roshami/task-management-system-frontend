@@ -117,7 +117,7 @@ const RegisterPage = () => {
           <div className="text-center text-sm text-gray-500 dark:text-gray-400">
             Already have an account?{' '}
             <Link
-              to="/login"
+              to="/"
               className="font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors cursor-pointer"
             >
               Sign in

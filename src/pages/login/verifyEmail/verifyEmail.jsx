@@ -58,7 +58,7 @@ const VerifyEmail = () => {
       toast.success('Email verified successfully');
       navigate('/');
     } catch (err) {
-      console.error(err);
+      //console.error(err);
       toast.error(err.response?.data?.message || 'Invalid verification code');
     } finally {
       setIsLoading(false);
@@ -75,7 +75,7 @@ const VerifyEmail = () => {
       });
       toast.success('New verification code sent to your email');
     } catch (err) {
-      console.error(err);
+      //console.error(err);
       toast.error('Failed to resend verification code');
     } finally {
       setIsResending(false);

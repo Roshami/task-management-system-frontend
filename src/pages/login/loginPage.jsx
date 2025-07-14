@@ -37,9 +37,11 @@ const LoginPage = () => {
       toast.error(err.response?.data?.error || 'Login failed');
       console.error(err);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   }
+
+ 
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-picture dark:bg-1D1B1B">
@@ -51,7 +53,7 @@ const LoginPage = () => {
       >
         <div className="text-center">
           <img
-            src="logo.png"
+            src="/logo.png"
             alt="Logo"
             className="w-40 mx-auto mb-4 object-cover"
           />
@@ -99,19 +101,19 @@ const LoginPage = () => {
               />
               <label
                 htmlFor="remember-me"
-                className="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                className="ml-2 block text-sm text-gray-700 dark:text-gray-300 cursor-pointer"
               >
                 Remember me
               </label>
             </div>
 
             <div className="text-sm">
-              <a
-                href="#"
-                className="font-medium text-violet-600 hover:text-violet-500 dark:text-violet-400"
+              <Link
+                to="/reset-password"
+                className="font-medium text-violet-600 hover:text-violet-500 dark:text-violet-400 cursor-pointer"
               >
                 Forgot password?
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -151,19 +153,15 @@ const LoginPage = () => {
           </motion.button>
         </form>
 
-        <Link
-          to="/signup"
-          className="text-center text-sm text-gray-600 dark:text-gray-400"
-        >
+        <p className="text-center text-sm text-gray-600 dark:text-gray-400">
           Don't have an account?{' '}
-          <motion.a
+          <motion.span
             whileHover={{ scale: 1.05 }}
-            href="#"
             className="font-medium text-violet-600 hover:text-violet-500 cursor-pointer dark:text-violet-400"
           >
-            Sign up
-          </motion.a>
-        </Link>
+            <Link to="/signup">Sign up</Link>
+          </motion.span>
+        </p>
       </motion.div>
     </div>
   );
