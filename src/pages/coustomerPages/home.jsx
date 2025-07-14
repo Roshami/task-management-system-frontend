@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import SearchBar from '../../components/searchbar';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { MdLogout, MdDashboard, MdTask } from 'react-icons/md';
