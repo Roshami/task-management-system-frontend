@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createTask } from '../../../features/tasks/taskSlice';
 import { jwtDecode } from 'jwt-decode';
 import { fetchUsers } from '../../../features/users/userSlice';
+import { isPending } from '@reduxjs/toolkit';
 
 const AddAdminTasksPage = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ const AddAdminTasksPage = () => {
     description: '',
     priority: 'High',
     status: 'Pending',
+    isPersonal: true,
     start_date: '',
     end_date: '',
     subtasks: [],

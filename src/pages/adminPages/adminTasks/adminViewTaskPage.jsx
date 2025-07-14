@@ -276,7 +276,7 @@ const AdminViewTaskPage = () => {
                     <button
                       type="submit"
                       className="flex-1 px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-lg transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
-                      disabled={isDone || isSubmitting}
+                      disabled={isSubmitting}
                     >
                       {isSubmitting ? (
                         <>

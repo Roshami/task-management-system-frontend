@@ -37,7 +37,7 @@ const TaskCard = ({
     },
     'On Hold': { bg: 'bg-red-100', text: 'text-red-800', dot: 'bg-red-500' },
   };
-  
+
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -76,27 +76,24 @@ const TaskCard = ({
     navigate(`/home/myTasks/viewTask/${_id}`);
   };
 
-const handleDelete = () => {
-  
-  setModalOpen(true);
-};
+  const handleDelete = () => {
+    setModalOpen(true);
+  };
 
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
+  const handleTaskDelete = async () => {
+    try {
+      await dispatch(deleteTask({ id: _id })).unwrap();
+      toast.success('Task deleted successfully');
+      navigate('/home/mytasks');
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to delete task');
+    }
+  };
 
-const handleTaskDelete = async () => {
-
-  try{
-    await dispatch(deleteTask({ id: _id })).unwrap();
-    toast.success('Task deleted successfully');
-    navigate('/home/mytasks');
-  } catch (error) {
-    console.error(error);
-    toast.error('Failed to delete task');
-  }
-};
-
-const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token');
 
   const getUser = jwtDecode(token);
 
@@ -179,13 +176,15 @@ const token = localStorage.getItem('token');
 
       {/* Action buttons */}
       <div className="flex justify-center gap-1 sm:justify-end sm:gap-2 mt-4">
-        <button
-          onClick={handleEdit}
-          className={`px-3 py-1.5 text-xs rounded-lg text-violet-600 hover:text-violet-800 hover:bg-violet-50 transition-colors cursor-pointer font-medium ${showAddButton ? 'hidden' : 'flex'} items-center gap-1 cursor-pointer`}
-        >
-          <FaRegEdit className="w-4 h-4" />
-          Edit
-        </button>
+        {getUser.companyName === 'Personal' && (
+          <button
+            onClick={handleEdit}
+            className="px-3 py-1.5 text-xs rounded-lg text-violet-600 hover:text-violet-800 hover:bg-violet-50 transition-colors cursor-pointer font-medium flex items-center gap-1"
+          >
+            <FaRegEdit className="w-4 h-4" />
+            Edit
+          </button>
+        )}
         <button
           onClick={handleView}
           className="px-3 py-1.5 text-xs rounded-lg text-gray-600 hover:text-gray-800 hover:bg-gray-50 transition-colors font-medium flex items-center gap-1 cursor-pointer"
@@ -193,52 +192,54 @@ const token = localStorage.getItem('token');
           <FaRegEye className="w-4 h-4" />
           View
         </button>
-        <button
-          onClick={handleDelete}
-          className={`px-3 py-1.5 text-xs rounded-lg text-red-600 hover:text-red-800 cursor-pointer hover:bg-red-50 transition-colors font-medium ${showAddButton ? 'hidden' : 'flex'} items-center gap-1 cursor-pointer`}
-        >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        {getUser.companyName === 'Personal' && (
+          <button
+            onClick={handleDelete}
+            className="px-3 py-1.5 text-xs rounded-lg text-red-600 hover:text-red-800 cursor-pointer hover:bg-red-50 transition-colors font-medium flex items-center gap-1"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-            />
-          </svg>
-          Delete
-        </button>
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              />
+            </svg>
+            Delete
+          </button>
+        )}
       </div>
 
-{/* Delete Model */}
-{modalOpen && (
-  <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 bg-opacity-50">
-    <div className="bg-white p-4 rounded-lg shadow-md">
-      <h2 className="text-lg font-semibold mb-4">Delete Task</h2>
-      <p className="text-gray-700">Are you sure you want to delete this task?</p>
-      <div className="flex justify-end mt-4">
-        <button
-          onClick={handleTaskDelete}
-          className="px-4 py-2 bg-red-500 text-white rounded-md mr-2 cursor-pointer"
-        >
-          Delete
-        </button>
-        <button
-          onClick={() => setModalOpen(false)}
-          className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md cursor-pointer"
-        >
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
-)}
-              
-
+      {/* Delete Model */}
+      {modalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 bg-opacity-50">
+          <div className="bg-white p-4 rounded-lg shadow-md">
+            <h2 className="text-lg font-semibold mb-4">Delete Task</h2>
+            <p className="text-gray-700">
+              Are you sure you want to delete this task?
+            </p>
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={handleTaskDelete}
+                className="px-4 py-2 bg-red-500 text-white rounded-md mr-2 cursor-pointer"
+              >
+                Delete
+              </button>
+              <button
+                onClick={() => setModalOpen(false)}
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md cursor-pointer"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

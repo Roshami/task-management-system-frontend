@@ -49,7 +49,7 @@ const ViewTaskPage = () => {
     try {
       await dispatch(updateTask({ id: id, updated: formData })).unwrap();
       toast.success('Task status updated successfully');
-     // navigate('/home/mytasks');
+      navigate('/home/mytasks');
     } catch (error) {
       toast.error('Failed to update task status');
     } finally {
@@ -60,16 +60,16 @@ const ViewTaskPage = () => {
   const isDone = formData.status === 'Completed';
 
   const statusColors = {
-    'Completed': 'bg-green-100 text-green-800',
+    Completed: 'bg-green-100 text-green-800',
     'In Progress': 'bg-amber-100 text-amber-800',
-    'Pending': 'bg-gray-100 text-gray-800',
-    'On Hold': 'bg-red-100 text-red-800'
+    Pending: 'bg-gray-100 text-gray-800',
+    'On Hold': 'bg-red-100 text-red-800',
   };
 
   const priorityColors = {
-    'High': 'bg-red-100 text-red-800',
-    'Medium': 'bg-amber-100 text-amber-800',
-    'Low': 'bg-green-100 text-green-800'
+    High: 'bg-red-100 text-red-800',
+    Medium: 'bg-amber-100 text-amber-800',
+    Low: 'bg-green-100 text-green-800',
   };
 
   return (
@@ -90,12 +90,22 @@ const ViewTaskPage = () => {
         <div className="p-6 border-b border-gray-200">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">{formData.title}</h1>
+              <h1 className="text-2xl font-bold text-gray-900">
+                {formData.title}
+              </h1>
               <div className="flex items-center gap-3 mt-2">
-                <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[formData.status]}`}>
+                <span
+                  className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    statusColors[formData.status]
+                  }`}
+                >
                   {formData.status}
                 </span>
-                <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${priorityColors[formData.priority]}`}>
+                <span
+                  className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    priorityColors[formData.priority]
+                  }`}
+                >
                   {formData.priority} Priority
                 </span>
               </div>
@@ -109,25 +119,37 @@ const ViewTaskPage = () => {
             {/* Left Column */}
             <div className="space-y-4">
               <div>
-                <h3 className="text-sm font-medium text-gray-500 mb-1">Description</h3>
+                <h3 className="text-sm font-medium text-gray-500 mb-1">
+                  Description
+                </h3>
                 <p className="text-gray-900">{formData.description}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h3 className="text-sm font-medium text-gray-500 mb-1">Start Date</h3>
-                  <p className="text-gray-900">{new Date(formData.start_date).toLocaleDateString()}</p>
+                  <h3 className="text-sm font-medium text-gray-500 mb-1">
+                    Start Date
+                  </h3>
+                  <p className="text-gray-900">
+                    {new Date(formData.start_date).toLocaleDateString()}
+                  </p>
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium text-gray-500 mb-1">End Date</h3>
-                  <p className="text-gray-900">{new Date(formData.end_date).toLocaleDateString()}</p>
+                  <h3 className="text-sm font-medium text-gray-500 mb-1">
+                    End Date
+                  </h3>
+                  <p className="text-gray-900">
+                    {new Date(formData.end_date).toLocaleDateString()}
+                  </p>
                 </div>
               </div>
             </div>
 
             {/* Right Column - Status Update */}
             <div className="border-l-0 md:border-l md:border-gray-200 md:pl-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Update Status</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-4">
+                Update Status
+              </h3>
               <form onSubmit={handleSubmit}>
                 <TaskFormDropdown
                   label="New Status"
@@ -153,14 +175,16 @@ const ViewTaskPage = () => {
                   <button
                     type="submit"
                     className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-lg transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center cursor-pointer"
-                    disabled={isDone || isSubmitting}
+                    disabled={isSubmitting}
                   >
                     {isSubmitting ? (
                       <>
                         <FiLoader className="animate-spin mr-2" />
                         Updating...
                       </>
-                    ) : 'Update Status'}
+                    ) : (
+                      'Update Status'
+                    )}
                   </button>
                 </div>
               </form>
@@ -170,21 +194,36 @@ const ViewTaskPage = () => {
           {/* Subtasks Section */}
           {formData.subtasks.length > 0 && (
             <div className="mt-8">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Subtasks</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-4">
+                Subtasks
+              </h3>
               <div className="space-y-4">
                 {formData.subtasks.map((subtask, index) => (
-                  <div key={index} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <div
+                    key={index}
+                    className="p-4 bg-gray-50 rounded-lg border border-gray-200"
+                  >
                     <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-medium text-gray-900">Subtask {index + 1}</h4>
+                      <h4 className="font-medium text-gray-900">
+                        Subtask {index + 1}
+                      </h4>
                     </div>
                     <div className="space-y-2">
                       <div>
-                        <h5 className="text-sm font-medium text-gray-500">Title</h5>
-                        <p className="text-gray-900">{subtask.subtasks_title}</p>
+                        <h5 className="text-sm font-medium text-gray-500">
+                          Title
+                        </h5>
+                        <p className="text-gray-900">
+                          {subtask.subtasks_title}
+                        </p>
                       </div>
                       <div>
-                        <h5 className="text-sm font-medium text-gray-500">Description</h5>
-                        <p className="text-gray-900">{subtask.subtasks_description}</p>
+                        <h5 className="text-sm font-medium text-gray-500">
+                          Description
+                        </h5>
+                        <p className="text-gray-900">
+                          {subtask.subtasks_description}
+                        </p>
                       </div>
                     </div>
                   </div>
