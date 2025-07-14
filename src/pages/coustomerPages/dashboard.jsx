@@ -3,6 +3,7 @@ import Calendar from '../../components/customerDashboard/calender';
 import TaskView from '../../components/customerDashboard/taskView';
 import { FaRegCalendarAlt } from 'react-icons/fa';
 import { BiTask } from 'react-icons/bi';
+import { jwtDecode } from 'jwt-decode';
 
 const Dashboard = () => {
   const tasks = useSelector((state) => state.tasks.tasks);
@@ -36,6 +37,11 @@ const Dashboard = () => {
     return task.status === 'In Progress' && taskDate <= today;
   });
 
+  const token = localStorage.getItem('token');
+  const getUser = jwtDecode(token);
+
+  const showLine = getUser?.user?.isPersonal === true;
+
   return (
     <div className="w-full max-w-7xl mx-auto p-4 sm:p-6">
       {/* Header */}
@@ -43,7 +49,16 @@ const Dashboard = () => {
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
           Dashboard Overview
         </h1>
-        <p className="text-gray-600 mt-1">Manage your tasks and schedule</p>
+        {showLine ? (
+          <p className="text-gray-600 mt-1">Manage your tasks and schedule</p>
+        ) : (
+          <p className="text-gray-600 mt-2">
+            Manage your tasks and schedule for{' '}
+            <span className="font-medium text-violet-700">
+              {getUser.companyName}
+            </span>
+          </p>
+        )}
       </div>
 
       {/* Main Content */}
