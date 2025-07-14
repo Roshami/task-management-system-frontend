@@ -9,7 +9,7 @@ import AdminTasksPage from './adminTasks/adminTasksPage';
 import AddAdminTasksPage from './adminTasks/addAdminTasksPage';
 import AddNewUser from './adminUsers/addNewUser';
 import EditUser from './adminUsers/editUsers';
-import AdminEditTasksPage from './adminTasks/admineditTaskPage';
+import AdminEditTasksPage from './adminTasks/adminEditTaskPage';
 import AdminViewTaskPage from './adminTasks/adminViewTaskPage';
 
 
