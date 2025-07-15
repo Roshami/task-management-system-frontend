@@ -11,12 +11,21 @@ import AddNewUser from './adminUsers/addNewUser';
 import EditUser from './adminUsers/editUsers';
 import AdminEditTasksPage from './adminTasks/adminEditTaskPage';
 import AdminViewTaskPage from './adminTasks/adminViewTaskPage';
-
+import { useEffect, useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import { FiChevronDown, FiLogOut } from 'react-icons/fi';
 
 const Admin = () => {
   const dispatch = useDispatch();
   const { searchTerm } = useSelector((state) => state.tasks);
   const location = useLocation();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const token = localStorage.getItem('token');
+  const admin = jwtDecode(token);
+  if (!token) {
+    window.location.href = '/admin/login';
+  }
 
   const handleSearch = (event) => {
     dispatch(setSearchTerm(event.target.value));
@@ -29,7 +38,7 @@ const Admin = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       {/* Header/Navigation */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-4">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-4 px-4 sm:px-6">
         <div className="flex flex-col items-center p-4 gap-4">
           {/* Top Row - Logo and Search */}
           <div className="flex flex-col sm:flex-row items-center w-full justify-between gap-4">
@@ -100,13 +109,46 @@ const Admin = () => {
               </ul>
             </nav>
 
-            <Link
-              to="/"
-              className="flex items-center gap-1 sm:gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors cursor-pointer"
-            >
-              <MdLogout className="text-lg sm:text-xl" />
-              <span>Logout</span>
-            </Link>
+            {/* User Dropdown */}
+            <div>
+              <div className="relative">
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="flex items-center space-x-2 focus:outline-none"
+                >
+                  <img
+                    className="w-10 h-10 rounded-full bg-gray-300 object-cover border-2 border-white/30"
+                    src="/profile.PNG"
+                    alt="User profile"
+                  />
+                  <FiChevronDown
+                    className={`transition-transform duration-200 ${
+                      isDropdownOpen ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
+              </div>
+              {isDropdownOpen && (
+                <div className="absolute right-10 mt-2 w-56 bg-white rounded-md shadow-lg z-50 overflow-hidden border-1 border-gray-100">
+                  <div className="px-4 py-3 border-b border-gray-100">
+                    <p className="text-sm font-medium text-gray-900 truncate">
+                      {admin.name}
+                    </p>
+                    <p className="text-xs text-gray-500 truncate">
+                      {admin.email}
+                    </p>
+                  </div>
+
+                  <Link
+                    to="/"
+                    className="flex items-center gap-1 sm:gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors cursor-pointer"
+                  >
+                    <MdLogout className="text-lg sm:text-xl" />
+                    <span>Logout</span>
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -121,7 +163,7 @@ const Admin = () => {
           <Route path="/tasks" element={<AdminTasksPage />} />
           <Route path="/tasks/addadmintasks" element={<AddAdminTasksPage />} />
           <Route path="/tasks/editTask/:id" element={<AdminEditTasksPage />} />
-          <Route path='/tasks/viewTask/:id' element={<AdminViewTaskPage />} />
+          <Route path="/tasks/viewTask/:id" element={<AdminViewTaskPage />} />
         </Routes>
       </div>
     </div>
