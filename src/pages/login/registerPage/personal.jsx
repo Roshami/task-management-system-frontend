@@ -92,12 +92,12 @@ const Personal = () => {
           />
           <label
             htmlFor="terms-checkbox"
-            className="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+            className="ml-2 block text-sm text-gray-700 "
           >
             I agree to the{' '}
             <a
               href="#"
-              className="text-violet-600 dark:text-violet-400 hover:underline"
+              className="text-violet-600  hover:underline"
             >
               Terms and Conditions
             </a>
@@ -144,7 +144,7 @@ const Personal = () => {
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+            <div className="w-full border-t border-gray-300 "></div>
           </div>
         </div>
       </form>

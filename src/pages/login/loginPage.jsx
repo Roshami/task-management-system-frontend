@@ -44,7 +44,7 @@ const LoginPage = () => {
  
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-picture dark:bg-1D1B1B">
+    <div className="flex justify-center items-center min-h-screen bg-picture">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -61,11 +61,11 @@ const LoginPage = () => {
             initial={{ y: -20 }}
             animate={{ y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-3xl font-extrabold text-gray-900 dark:text-violet-300"
+            className="text-3xl font-extrabold text-violet-900"
           >
             Welcome Back
           </motion.h1>
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+          <p className="mt-2 text-sm text-gray-600">
             Sign in to your account
           </p>
         </div>
@@ -101,7 +101,7 @@ const LoginPage = () => {
               />
               <label
                 htmlFor="remember-me"
-                className="ml-2 block text-sm text-gray-700 dark:text-gray-300 cursor-pointer"
+                className="ml-2 block text-sm text-gray-700  cursor-pointer"
               >
                 Remember me
               </label>
@@ -110,7 +110,7 @@ const LoginPage = () => {
             <div className="text-sm">
               <Link
                 to="/reset-password"
-                className="font-medium text-violet-600 hover:text-violet-500 dark:text-violet-400 cursor-pointer"
+                className="font-medium text-violet-600 hover:text-violet-500 cursor-pointer"
               >
                 Forgot password?
               </Link>
@@ -153,11 +153,11 @@ const LoginPage = () => {
           </motion.button>
         </form>
 
-        <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+        <p className="text-center text-sm text-gray-600">
           Don't have an account?{' '}
           <motion.span
             whileHover={{ scale: 1.05 }}
-            className="font-medium text-violet-600 hover:text-violet-500 cursor-pointer dark:text-violet-400"
+            className="font-medium text-violet-600 hover:text-violet-500 cursor-pointer"
           >
             <Link to="/signup">Sign up</Link>
           </motion.span>

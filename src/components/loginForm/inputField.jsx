@@ -20,7 +20,7 @@ const InputField = ({
     >
       <label
         htmlFor={name}
-        className="block mb-2 text-sm font-medium text-gray-700 dark:text-violet-200"
+        className="block mb-2 text-sm font-medium text-gray-700"
       >
         {label}
       </label>
@@ -36,9 +36,9 @@ const InputField = ({
         disabled={disabled}
         className={`
           w-full p-3 text-sm rounded-lg border 
-          ${error ? 'border-red-500' : 'border-gray-300 dark:border-1D1B1B'} 
-          bg-gray-50 dark:bg-1D1B1B 
-          text-gray-900 dark:text-gray-100
+          ${error ? 'border-red-500' : 'border-gray-300'} 
+          bg-gray-50 
+          text-gray-900 
           focus:ring-2 focus:ring-violet-500 focus:border-transparent
           transition-all duration-200
           ${disabled ? 'opacity-50 cursor-not-allowed' : ''}

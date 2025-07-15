@@ -74,11 +74,11 @@ const RegisterPage = () => {
             initial={{ y: -20 }}
             animate={{ y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-violet-300"
+            className="text-2xl sm:text-3xl font-bold text-violet-800 "
           >
             Create Your Account
           </motion.h1>
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+          <p className="mt-2 text-sm text-gray-600 ">
             Join us today and unlock amazing features
           </p>
         </div>
@@ -89,8 +89,8 @@ const RegisterPage = () => {
               to="/signup/personal"
               className={`px-4 py-2 text-sm cursor-pointer sm:text-base rounded-lg font-medium transition-all duration-200 ${
                 isActive('/signup/personal')
-                  ? 'bg-violet-100 dark:bg-violet-900/50 text-violet-700 dark:text-violet-300 shadow-inner'
-                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                  ? 'bg-violet-100 0 text-violet-700  shadow-inner'
+                  : 'text-gray-700  hover:bg-gray-100 '
               }`}
             >
               Personal
@@ -99,26 +99,26 @@ const RegisterPage = () => {
               to="/signup/company"
               className={`px-4 py-2 text-sm cursor-pointer sm:text-base rounded-lg font-medium transition-all duration-200 ${
                 isActive('/signup/company')
-                  ? 'bg-violet-100 dark:bg-violet-900/50 text-violet-700 dark:text-violet-300 shadow-inner'
-                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 '
+                  ? 'bg-violet-100 text-violet-700 shadow-inner'
+                  : 'text-gray-700  hover:bg-gray-100  '
               }`}
             >
               Company
             </Link>
           </div>
 
-          <div className="border-t border-gray-200 dark:border-gray-700"></div>
+          <div className="border-t border-gray-200"></div>
 
           <Routes>
             <Route path="/personal" element={<Personal />} />
             <Route path="/company" element={<Company />} />
           </Routes>
 
-          <div className="text-center text-sm text-gray-500 dark:text-gray-400">
+          <div className="text-center text-sm text-gray-500 ">
             Already have an account?{' '}
             <Link
               to="/"
-              className="font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 transition-colors cursor-pointer"
+              className="font-medium text-violet-600 hover:text-violet-700  transition-colors cursor-pointer"
             >
               Sign in
             </Link>
