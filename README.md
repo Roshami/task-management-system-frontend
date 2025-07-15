@@ -48,6 +48,7 @@ It includes email verification with OTP, secure JWT authentication, task filteri
 | Role          | Email                                                | Password |
 | ------------- | ---------------------------------------------------- | -------- |
 | Admin         | [admin@gmail.com](mailto\:admin@gmail.com)           | 123      |
+| Company Users | [customer@example.com](mailto\:customer@example.com) | 12345678 |
 | Personal User | [personal@example.com](mailto\:personal@example.com) | 123      |
 
 ## 📁 Folder Structure (Simplified)
