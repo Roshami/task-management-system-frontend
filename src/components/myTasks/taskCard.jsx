@@ -4,7 +4,7 @@ import { FaRegEdit, FaRegEye } from 'react-icons/fa';
 import { MdDateRange } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { deleteTask } from '../../features/tasks/taskSlice';
+import { deleteTask, fetchTasks } from '../../features/tasks/taskSlice';
 import toast from 'react-hot-toast';
 import { jwtDecode } from 'jwt-decode';
 
@@ -87,6 +87,7 @@ const TaskCard = ({
       await dispatch(deleteTask(_id)).unwrap();
       toast.success('Task deleted successfully');
       setModalOpen(false);
+      dispatch(fetchTasks(_id));
       navigate('/home/mytasks');
     } catch (error) {
       console.error(error);
@@ -98,7 +99,6 @@ const TaskCard = ({
 
   const getUser = jwtDecode(token);
 
-  const showAddButton = getUser?.user?.isPersonal === true;
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300 w-full group hover:border-violet-200">
