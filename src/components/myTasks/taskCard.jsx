@@ -84,8 +84,9 @@ const TaskCard = ({
 
   const handleTaskDelete = async () => {
     try {
-      await dispatch(deleteTask({ id: _id })).unwrap();
+      await dispatch(deleteTask(_id)).unwrap();
       toast.success('Task deleted successfully');
+      setModalOpen(false);
       navigate('/home/mytasks');
     } catch (error) {
       console.error(error);
