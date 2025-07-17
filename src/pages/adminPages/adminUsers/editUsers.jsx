@@ -19,11 +19,11 @@ const EditUser = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
+    name: user?.name || '',
+    email: user?.email || '',
+    password: user?.password || '',
     isPersonal: false,
-    companyName: '',
+    companyName: user?.companyName || '',
   });
 
   useEffect(() => {
